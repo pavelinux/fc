@@ -1,4 +1,5 @@
 #!/bin/bash
-ifort -o coordenadas md1.f90
-chmod 755 coordenadas
-./coordenadas
+args=("$@")
+ifort -o ${args[1]} ${args[0]}
+chmod 755 ${args[1]}
+./${args[1]}
