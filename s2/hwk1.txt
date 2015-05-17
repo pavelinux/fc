@@ -1,0 +1,19 @@
+# N = numero de canicas
+N = 100
+1. Arreglarlas en un cuadrado (L*H)
+L = 10, H = 10
+d_canica = 1
+canica_1 = (0,0) -> coordenadas
+canica_2 = (d_canica,0) -> coordenadas
+¿Como se define la densidad?
+rho=m/V -> rho=m/A=1.0 (sin que se encimen)
+A = L*H, L=H
+L=sqrt(N)
+L=10
+
+Hacer un algoritmo que dibuje las coordenadas de cada canica
+Hacer un programa coor.dat que contenga las coordenadas (x_i,y_i)
+de cada canica
+1 (x_1,y_1)
+2 (x_2,y_2)
+
