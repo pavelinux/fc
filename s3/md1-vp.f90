@@ -25,6 +25,7 @@ LX = SQRT(DBLE(N)/RHO)
 LY = LX
 L = LX
 NN = SQRT(DBLE(N)) + 1
+<<<<<<< HEAD
 DX = L / DBLE(NN)
 DY = L / DBLE(NN)
 K = 0
@@ -37,6 +38,20 @@ DO I = 1, NN
      END IF
  END DO 
 END DO 
+=======
+DX = LX / DBLE(NN)
+DY = LY / DBLE(NN)
+K=0
+DO I=1, NN
+ DO J=1,NN
+ IF(K<N) THEN
+     K=K+1
+     RX(K) = DBLE(I) * DX
+     RY(K) = DBLE(J) * DY 
+ END IF
+ END DO
+END DO
+>>>>>>> 9204afe83030d5bc56eb58b097be5a6d9b93a215
 END SUBROUTINE COORDENADAS
 
 SUBROUTINE CELDA
