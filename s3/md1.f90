@@ -3,7 +3,7 @@ IMPLICIT NONE
 INTEGER :: N,NN
 REAL*8 RHO,LX,LY,DX,DY 
 REAL*8, DIMENSION(:), ALLOCATABLE::RX,RY
-REAL*8,rnd
+REAL*8 RND
 END MODULE VARIABLES
 
 PROGRAM MD
@@ -24,43 +24,43 @@ ALLOCATE(RX(N),RY(N))
 ALLOCATE(RX(N),RY(N))
 WRITE(*,*) 'DAME LA DENSIDAD'
 READ(*,*) RHO
-LX = SQRT(DBLE(N)/RHO)
+LX = SQRT(DBLE(N/RHO))
 LY = LX
-NN = SQRT(DBLE(N)) + 1
+NN = SQRT(DBLE(N)) + 1 
 DX = LX/DBLE(NN)
-DY = LY/DBLE(NN)
+DY = DX
 K=0
 DO I=1,NN
  DO J=1,NN
- IF(K<N) THEN
-     K=K+1
-     RX(K) = DBLE(I) * DX
-     RY(K) = DBLE(J) * DY
- END IF
+     IF(K<N) THEN
+         K=K+1
+         RX(K) = DBLE(I) * DX
+         RY(K) = DBLE(J) * DY
+     END IF
  END DO
 END DO
-m_x = 0.0
-m_y = 0.0
-do i =1, n
-call random_number(rnd)
-vx(i) = 2.0 * rnd - 1.0
-vy(i) = 2.0 * rnd - 1.0
-m_x = m_x + vx(i)
-m_y = m_y + vy(i)
-end do
-m_x = m_x / dble(n)
-m_y = m_y / dble(n)
-do i = 1, N
-vx(i) = vx(i)*m_x
-vx(i) = vx(i)*m_x
-end do
+M_X = 0.0
+M_Y = 0.0
+DO I =1, N
+    CALL RANDOM_NUMBER(RND)
+    VX(I) = 2.0 * RND - 1.0
+    VY(I) = 2.0 * RND - 1.0
+    M_X = M_X + VX(I)
+    M_Y = M_Y + VY(I)
+END DO
+M_X = M_X / DBLE(N)
+M_Y = M_Y / DBLE(N)
+DO I = 1, N
+    VX(I) = VX(I)*M_X
+    VY(I) = VY(I)*M_Y
+END DO
 END SUBROUTINE COORDENADAS
 
 SUBROUTINE CELDA
 USE VARIABLES
 IMPLICIT NONE
 INTEGER :: I
-OPEN(1,FILE='COORD.xyz', STATUS='UNKNOWN', ACTION='WRITE')
+OPEN(1,FILE='COORDENADAS.xyz', STATUS='UNKNOWN', ACTION='WRITE')
 WRITE(1,*) N
 WRITE(1,*)
 DO I=1,N

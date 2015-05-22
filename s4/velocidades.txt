@@ -1,0 +1,14 @@
+1. Generar velocidades al azar:
+EL p = 0
+Vx = random()
+Vy = random()
+2. Generar las fuerzas
+m_particulas = 1, esferas
+arreglo de masas
+matriz de fuerzas -> potencial de interaccion (asintotico) Lennard-Jones
+U(r) = 4 * E_0 ((s/r)^12 - (s/r)^6), s-diametro de particula, E_0 -valor minimo de energia, r_ij
+r_ij = sqrt(x11^2 + ...)
+cuanto vale r_ij para E_0, para que r_ij la derivada del potencial vale cero
+
+f1 = f11 + f12 + f13
+n^2 - n -> termino de calculo de fuerzas
