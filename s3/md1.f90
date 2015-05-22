@@ -3,6 +3,7 @@ IMPLICIT NONE
 INTEGER :: N,NN
 REAL*8 RHO,LX,LY,DX,DY 
 REAL*8, DIMENSION(:), ALLOCATABLE::RX,RY
+REAL*8,rnd
 END MODULE VARIABLES
 
 PROGRAM MD
@@ -19,6 +20,8 @@ INTEGER :: I,J,K
 WRITE(*,*) 'DAME EL NUMERO DE ATOMOS'
 READ(*,*) N
 ALLOCATE(RX(N),RY(N))
+ALLOCATE(RX(N),RY(N))
+ALLOCATE(RX(N),RY(N))
 WRITE(*,*) 'DAME LA DENSIDAD'
 READ(*,*) RHO
 LX = SQRT(DBLE(N)/RHO)
@@ -27,15 +30,30 @@ NN = SQRT(DBLE(N)) + 1
 DX = LX/DBLE(NN)
 DY = LY/DBLE(NN)
 K=0
-DO I=0, N
- DO J=0,N
- K=K+1
- IF(K<=N) THEN
-     RX(K) = DBLE(J) * DX
+DO I=1,NN
+ DO J=1,NN
+ IF(K<N) THEN
+     K=K+1
+     RX(K) = DBLE(I) * DX
      RY(K) = DBLE(J) * DY
  END IF
  END DO
 END DO
+m_x = 0.0
+m_y = 0.0
+do i =1, n
+call random_number(rnd)
+vx(i) = 2.0 * rnd - 1.0
+vy(i) = 2.0 * rnd - 1.0
+m_x = m_x + vx(i)
+m_y = m_y + vy(i)
+end do
+m_x = m_x / dble(n)
+m_y = m_y / dble(n)
+do i = 1, N
+vx(i) = vx(i)*m_x
+vx(i) = vx(i)*m_x
+end do
 END SUBROUTINE COORDENADAS
 
 SUBROUTINE CELDA
