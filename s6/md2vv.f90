@@ -1,11 +1,11 @@
 MODULE VARIABLES
 IMPLICIT NONE
 INTEGER :: N,NN,NPASOS=10000
-REAL*8 :: RHO,LX,LY,LZ,DX,DY,DZ,RIJ,UPOT,ULJ,M_X,M_Y,M_Z,DELTA_T=0.001, UKIN
+REAL*8 :: RHO,LX,LY,DX,DY,RIJ,UPOT,ULJ,M_X,M_Y,DELTA_T=0.001, UKIN
 REAL*8 :: SGM = 1.0, EPS=1.0, RCUT=2.50
-REAL*8, DIMENSION(:), ALLOCATABLE::RX,RY,RZ
-REAL*8, DIMENSION(:), ALLOCATABLE::VX,VY,VZ
-REAL*8, DIMENSION(:), ALLOCATABLE::FX,FY,FZ
+REAL*8, DIMENSION(:), ALLOCATABLE::RX,RY
+REAL*8, DIMENSION(:), ALLOCATABLE::VX,VY
+REAL*8, DIMENSION(:), ALLOCATABLE::FX,FY
 REAL*8 RND
 END MODULE VARIABLES
 
@@ -24,19 +24,17 @@ IMPLICIT NONE
 INTEGER :: H,I,J,K,M
 WRITE(*,*) 'DAME EL NUMERO DE ATOMOS'
 READ(*,*) N
-ALLOCATE(RX(N),RY(N),RZ(N))
-ALLOCATE(VX(N),VY(N),VZ(N))
-ALLOCATE(FX(N),FY(N),FZ(N))
+ALLOCATE(RX(N),RY(N))
+ALLOCATE(VX(N),VY(N))
+ALLOCATE(FX(N),FY(N))
 WRITE(*,*) 'DAME LA DENSIDAD'
 READ(*,*) RHO
 !RHO = 0.1
 LX = SQRT(DBLE(N/RHO))
 LY = LX
-LZ = LX
 NN = SQRT(DBLE(N)) + 1 
 DX = LX/DBLE(NN)
 DY = DX
-DZ = DX
 K=0
 DO H=1,NN 
     DO I=1,NN - 1
@@ -45,30 +43,24 @@ DO H=1,NN
                  K=K+1
                  RX(K) = DBLE(I) * DX
                  RY(K) = DBLE(J) * DY
-                 RZ(K) = DBLE(H) * DZ
              END IF
          END DO
     END DO
 END DO
 M_X = 0.0
 M_Y = 0.0
-M_Z = 0.0
 DO I =1, N
     CALL RANDOM_NUMBER(RND)
     VX(I) = 2.0 * RND - 1.0
     VY(I) = 2.0 * RND - 1.0
-    VZ(I) = 2.0 * RND - 1.0
     M_X = M_X + VX(I)
     M_Y = M_Y + VY(I)
-    M_Z = M_Z + VZ(I)
 END DO
 M_X = M_X / DBLE(N)
 M_Y = M_Y / DBLE(N)
-M_Z = M_Z / DBLE(N)
 DO I = 1, N
     VX(I) = VX(I)-M_X
     VY(I) = VY(I)-M_Y
-    VZ(I) = VZ(I)-M_Y
 END DO
 END SUBROUTINE COORDENADAS
 
@@ -80,8 +72,7 @@ OPEN(1,FILE='COORDENADAS.xyz', STATUS='UNKNOWN', ACTION='WRITE')
 WRITE(1,*) N
 WRITE(1,*)
 DO I=1,N
-    WRITE(1,*)'C ', RX(I), RY(I), RZ(I)
-    !WRITE(1,*)'C ', RX(I), RY(I), 0.0
+    WRITE(1,*)'C ', RX(I), RY(I), 0.0
 END DO
 CLOSE(1)
 END SUBROUTINE CELDA
@@ -94,15 +85,13 @@ REAL*8 :: DULJ, UCUT
 DO I=1, N
     FX(I) = 0.0
     FY(I) = 0.0
-    FZ(I) = 0.0
 END DO
 UPOT = 0.0
 DO I = 1, NN - 1
  DO J = I+1, NN
      DX = RX(I) - RX(J)
      DY = RY(I) - RY(J)
-     DZ = RZ(I) - RZ(J)
-     RIJ = SQRT(DX * DX + DY * DY + DZ * DZ)
+     RIJ = SQRT(DX * DX + DY * DY)
       IF (RIJ<= RCUT) THEN
 !           ULJ = 4.0 * EPS * ((SGM/RIJ)**6 * ( (SGM/RIJ)**6 - 1.0)) - UCUT
            ULJ = 4.0 * EPS * ((SGM/RIJ)**6 * ( (SGM/RIJ)**6 - 1.0)) 
@@ -111,12 +100,13 @@ DO I = 1, NN - 1
            FX(I) = FX(I) + DULJ * DX
            FY(I) = FY(I) + DULJ * DY
            FX(J) = FX(J) - DULJ * DX
-           FY(J) = Fy(J) - DULJ * DY
+           FY(J) = FY(J) - DULJ * DY
+           !write(*,*) FX(I), FY(I), FX(J),FY(J)
         END IF
  END DO 
 END DO
-WRITE(*,*) SUM(FX),SUM(FY),SUM(FZ)
-stop
+WRITE(*,*) SUM(FX),SUM(FY)
+STOP
 END SUBROUTINE FUERZAS
 
 SUBROUTINE MDLOOP
@@ -128,10 +118,8 @@ DO PASO = 1, NPASOS
     DO I =1, N
         VX(I) = VX(I) + 0.50 * DELTA_T * FX(I)
         VY(I) = VY(I) + 0.50 * DELTA_T * FY(I)
-        VZ(I) = VZ(I) + 0.50 * DELTA_T * FZ(I)
         RX(I) = RX(I) + DELTA_T *VX(I)
         RY(I) = RY(I) + DELTA_T *VY(I)
-        RZ(I) = RZ(I) + DELTA_T *VZ(I)
         ! CONDICIONES PERIODICAS A LA FRONTERA 
         !IF(RX(I) < 0.0) RX(I) = RX(I) + LX
         !IF(RY(I) < 0.0) RY(I) = RY(I) + LY
@@ -144,8 +132,7 @@ DO PASO = 1, NPASOS
     DO I =1, N
         VX(I) = VX(I) + 0.50 * DELTA_T * FX(I)
         VY(I) = VY(I) + 0.50 * DELTA_T * FY(I)
-        VZ(I) = VZ(I) + 0.50 * DELTA_T * FZ(I)
-        UKIN = UKIN + VX(I) ** 2 + VY(I)**2 + VZ(I)**2
+        UKIN = UKIN + VX(I) ** 2 + VY(I)**2 
     END DO
     IF(MOD(PASO,100)== 0) CALL CELDA
     UKIN = UKIN * 0.50
