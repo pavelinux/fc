@@ -21,13 +21,13 @@ END PROGRAM MD_F
 SUBROUTINE COORDENADAS
 USE VARIABLES
 IMPLICIT NONE
-INTEGER :: H,I,J,K,M
-WRITE(*,*) 'DAME EL NUMERO DE ATOMOS'
+INTEGER :: I,J,K,M
+WRITE(*,*) 'INGRESA EL NUMERO DE PARTICULAS'
 READ(*,*) N
 ALLOCATE(RX(N),RY(N))
 ALLOCATE(VX(N),VY(N))
 ALLOCATE(FX(N),FY(N))
-WRITE(*,*) 'DAME LA DENSIDAD'
+WRITE(*,*) 'DAME LA DENSIDAD DEL ARREGLO'
 READ(*,*) RHO
 !RHO = 0.1
 LX = SQRT(DBLE(N/RHO))
@@ -36,16 +36,14 @@ NN = SQRT(DBLE(N)) + 1
 DX = LX/DBLE(NN)
 DY = DX
 K=0
-DO H=1,NN 
-    DO I=1,NN - 1
-         DO J=1,NN - 1
-             IF(K<N) THEN
-                 K=K+1
-                 RX(K) = DBLE(I) * DX
-                 RY(K) = DBLE(J) * DY
-             END IF
-         END DO
-    END DO
+DO I=1,NN - 1
+     DO J=1,NN 
+         IF(K<N) THEN
+             K=K+1
+             RX(K) = DBLE(I) * DX
+             RY(K) = DBLE(J) * DY
+         END IF
+     END DO
 END DO
 M_X = 0.0
 M_Y = 0.0
