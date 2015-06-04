@@ -29,23 +29,20 @@ ALLOCATE(VX(N),VY(N))
 ALLOCATE(FX(N),FY(N))
 WRITE(*,*) 'DAME LA DENSIDAD'
 READ(*,*) RHO
-!RHO = 0.1
 LX = SQRT(DBLE(N/RHO))
 LY = LX
 NN = SQRT(DBLE(N)) + 1 
 DX = LX/DBLE(NN)
 DY = DX
 K=0
-DO H=1,NN 
-    DO I=1,NN - 1
-         DO J=1,NN - 1
-             IF(K<N) THEN
-                 K=K+1
-                 RX(K) = DBLE(I) * DX
-                 RY(K) = DBLE(J) * DY
-             END IF
-         END DO
-    END DO
+DO I=1,NN 
+     DO J=1,NN
+         IF(K<N) THEN
+             K=K+1
+             RX(K) = DBLE(I) * DX
+             RY(K) = DBLE(J) * DY
+         END IF
+     END DO
 END DO
 M_X = 0.0
 M_Y = 0.0
@@ -81,7 +78,7 @@ SUBROUTINE FUERZAS
 USE VARIABLES
 IMPLICIT NONE
 INTEGER :: I, J
-REAL*8 :: DULJ, UCUT
+REAL*8 :: DULJ, UCUT=
 DO I=1, N
     FX(I) = 0.0
     FY(I) = 0.0
@@ -91,22 +88,32 @@ DO I = 1, NN - 1
  DO J = I+1, NN
      DX = RX(I) - RX(J)
      DY = RY(I) - RY(J)
+! Min imagen
+if(dx > 0.5*lx) then
+    dx = dx - lx
+elseif(dx < -0.5*lx) then
+    dx = dx + lx
+endif 
+if(dy > 0.5*ly) then
+    dy = dy - ly
+elseif(dy < -0.5*ly) then
+    dy = dy + ly
+endif 
+!
      RIJ = SQRT(DX * DX + DY * DY)
       IF (RIJ<= RCUT) THEN
-!           ULJ = 4.0 * EPS * ((SGM/RIJ)**6 * ( (SGM/RIJ)**6 - 1.0)) - UCUT
-           ULJ = 4.0 * EPS * ((SGM/RIJ)**6 * ( (SGM/RIJ)**6 - 1.0)) 
+           ULJ = 4.0 * EPS * ((SGM/RIJ)**6 * ( (SGM/RIJ)**6 - 1.0)) - UCUT
            UPOT = UPOT + ULJ
            DULJ = 48.0 * EPS * (SGM/RIJ)**6 * ((SGM/RIJ)**6 - 0.5)/(RIJ * RIJ)
            FX(I) = FX(I) + DULJ * DX
            FY(I) = FY(I) + DULJ * DY
            FX(J) = FX(J) - DULJ * DX
            FY(J) = FY(J) - DULJ * DY
-           !write(*,*) FX(I), FY(I), FX(J),FY(J)
         END IF
  END DO 
 END DO
 WRITE(*,*) SUM(FX),SUM(FY)
-STOP
+!STOP
 END SUBROUTINE FUERZAS
 
 SUBROUTINE MDLOOP
@@ -121,11 +128,10 @@ DO PASO = 1, NPASOS
         RX(I) = RX(I) + DELTA_T *VX(I)
         RY(I) = RY(I) + DELTA_T *VY(I)
         ! CONDICIONES PERIODICAS A LA FRONTERA 
-        !IF(RX(I) < 0.0) RX(I) = RX(I) + LX
-        !IF(RY(I) < 0.0) RY(I) = RY(I) + LY
-        !IF(RX(I) > 0.0) RX(I) = RX(I) - LX
-        !IF(RY(I) > 0.0) RY(I) = RY(I) - LY
-        !RZ(I) = RZ(I) + DELTA_T *VZ(I)
+        IF(RX(I) < 0.0) RX(I) = RX(I) + LX
+        IF(RY(I) < 0.0) RY(I) = RY(I) + LY
+        IF(RX(I) > 0.0) RX(I) = RX(I) - LX
+        IF(RY(I) > 0.0) RY(I) = RY(I) - LY
     END DO
     CALL FUERZAS
     UKIN=0.0
@@ -136,7 +142,7 @@ DO PASO = 1, NPASOS
     END DO
     IF(MOD(PASO,100)== 0) CALL CELDA
     UKIN = UKIN * 0.50
-    !WRITE(*,*)PASO,UPOT/DBLE(N),UKIN/DBLE(N)
+!    WRITE(*,*)PASO,UPOT/DBLE(N),UKIN/DBLE(N)
     WRITE(2,*)PASO,UPOT/DBLE(N),UKIN/DBLE(N)
 END DO
 CLOSE(2)
