@@ -35,13 +35,8 @@ NN = SQRT(DBLE(N)) + 1
 DX = LX/DBLE(NN)
 DY = DX
 K=0
-<<<<<<< HEAD
-DO I=1,NN - 1
-     DO J=1,NN 
-=======
 DO I=1,NN 
      DO J=1,NN
->>>>>>> f1814a81fbf31de67342e6daf40d4401f074ac37
          IF(K<N) THEN
              K=K+1
              RX(K) = DBLE(I) * DX
@@ -79,6 +74,8 @@ END DO
 CLOSE(1)
 END SUBROUTINE CELDA
 
+! SUBRUTINA A REVISAR
+
 SUBROUTINE FUERZAS
 USE VARIABLES
 IMPLICIT NONE
@@ -94,16 +91,16 @@ DO I = 1, NN - 1
      DX = RX(I) - RX(J)
      DY = RY(I) - RY(J)
 ! Min imagen
-if(dx > 0.5*lx) then
-    dx = dx - lx
-elseif(dx < -0.5*lx) then
-    dx = dx + lx
-endif 
-if(dy > 0.5*ly) then
-    dy = dy - ly
-elseif(dy < -0.5*ly) then
-    dy = dy + ly
-endif 
+IF(DX > 0.5*LX) THEN
+    DX = DX - LX
+ELSEIF(DX < -0.5*LX) THEN
+    DX = DX + LX
+ENDIF 
+IF(DY > 0.5*LY) THEN
+    DY = DY - LY
+ELSEIF(DY < -0.5*LY) THEN
+    DY = DY + LY
+ENDIF 
 !
      RIJ = SQRT(DX * DX + DY * DY)
       IF (RIJ<= RCUT) THEN
@@ -120,6 +117,8 @@ END DO
 WRITE(*,*) SUM(FX),SUM(FY)
 !STOP
 END SUBROUTINE FUERZAS
+
+! 
 
 SUBROUTINE MDLOOP
 USE VARIABLES
