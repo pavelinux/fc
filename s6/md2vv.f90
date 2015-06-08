@@ -69,8 +69,8 @@ END DO
 M_X = M_X / DBLE(N)
 M_Y = M_Y / DBLE(N)
 DO I = 1, N
-    VX(I) = VX(I)-M_X
-    VY(I) = VY(I)-M_Y
+    VX(I) = VX(I) - M_X
+    VY(I) = VY(I) - M_Y
 END DO
 END SUBROUTINE COORDENADAS
 
@@ -100,18 +100,18 @@ DO I=1, N
 END DO
 UPOT = 0.0
 DO I = 1, NN - 1
- DO J = I+1, NN
+ DO J = I + 1, NN 
      DX = RX(I) - RX(J)
      DY = RY(I) - RY(J)
     ! MINIMA IMAGEN
-    IF(DX > 0.5*LX) THEN
+    IF(DX > 0.5 * LX) THEN
         DX = DX - LX
-    ELSEIF(DX < -0.5*LX) THEN
+    ELSEIF(DX < - 0.5 * LX) THEN
         DX = DX + LX
     ENDIF 
-    IF(DY > 0.5*LY) THEN
+    IF(DY > 0.5 * LY) THEN
         DY = DY - LY
-    ELSEIF(DY < -0.5*LY) THEN
+    ELSEIF(DY < - 0.5 * LY) THEN
         DY = DY + LY
     ENDIF 
     !
@@ -128,7 +128,8 @@ DO I = 1, NN - 1
         END IF
  END DO 
 END DO
-!WRITE(*,*) SUM(FX),SUM(FY)
+!WRITE(*,'(2F12.7)') SUM(FX),SUM(FY)
+WRITE(*,*) SUM(FX),SUM(FY)
 !STOP
 END SUBROUTINE FUERZAS
 !^^^ SUBRUTINA CON ERRORES ^^^ 
@@ -163,6 +164,11 @@ DO PASO = 1, NPASOS
 END DO
 CLOSE(3)
 END SUBROUTINE MDLOOP
+subroutine unidades
+use variables
+implicit none
+
+end subroutine unidades
 SUBROUTINE LOGFILE
 USE VARIABLES
 IMPLICIT NONE
