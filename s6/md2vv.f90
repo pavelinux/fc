@@ -167,6 +167,7 @@ DO PASO = 1, NPASOS
         UKIN = UKIN + VX(I) ** 2 + VY(I)**2 
     END DO
     IF(MOD(PASO,100)== 0) CALL CELDA
+    !if(mod(paso,5000) == 0) write (*,*) VX(I),VY(I)
     UKIN = UKIN * 0.50
     UTOT = UPOT + UKIN
     WRITE(3,'(I7,X,3F12.6)')PASO,UPOT/DBLE(N),UKIN/DBLE(N),UTOT/(DBLE(N))
