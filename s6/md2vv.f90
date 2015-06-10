@@ -71,10 +71,13 @@ M_Y = 0.0
 DO I =1, N
     CALL RANDOM_NUMBER(RND)
     VX(I) = 2.0 * RND - 1.0
+    CALL RANDOM_NUMBER(RND)
     VY(I) = 2.0 * RND - 1.0
+    write (23,*) VX(I),VY(I)
     M_X = M_X + VX(I)
     M_Y = M_Y + VY(I)
 END DO
+STOP
 M_X = M_X / DBLE(N)
 M_Y = M_Y / DBLE(N)
 DO I = 1, N
@@ -164,10 +167,10 @@ DO PASO = 1, NPASOS
     DO I =1, N
         VX(I) = VX(I) + 0.50 * DELTA_T * FX(I)
         VY(I) = VY(I) + 0.50 * DELTA_T * FY(I)
+    if(mod(paso,5000) == 0) write (*,*) VX(I),VY(I)
         UKIN = UKIN + VX(I) ** 2 + VY(I)**2 
     END DO
     IF(MOD(PASO,100)== 0) CALL CELDA
-    !if(mod(paso,5000) == 0) write (*,*) VX(I),VY(I)
     UKIN = UKIN * 0.50
     UTOT = UPOT + UKIN
     WRITE(3,'(I7,X,3F12.6)')PASO,UPOT/DBLE(N),UKIN/DBLE(N),UTOT/(DBLE(N))
