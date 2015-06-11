@@ -9,7 +9,7 @@ NO_BINS = 100
 DELTA = (LS - LI) / NO_BINS
 ALLOCATE(FREQ(NAT))
 DO I = 1, NAT
-    OPEN(1,FILE='velocidades_x_finales.dat',STATUS='OLD',ACTION='READ')
+    OPEN(1,FILE='velocidades_y_finales.dat',STATUS='OLD',ACTION='READ')
     READ(1, *) VX
     VX = VX + 1.0
     BIN = VX / DELTA
@@ -18,7 +18,7 @@ END DO
 CLOSE(1)
 
 DO I = 0, NO_BINS
-    OPEN(2,FILE='salida_histograma_vel_x_fin.dat',STATUS='UNKNOWN',ACTION='WRITE')
+    OPEN(2,FILE='salida_histograma_vel_y_fin.dat',STATUS='UNKNOWN',ACTION='WRITE')
     WRITE(2,*) I * DELTA - 1, FREQ(I)
 END DO
 CLOSE(2)
