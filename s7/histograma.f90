@@ -8,18 +8,21 @@ LI = 0.0
 NO_BINS = 100
 DELTA = (LS - LI) / NO_BINS
 DO I = 1, NAT
-    OPEN(1,file='datos_histograma.txt',status='old',action='read')
+    OPEN(1,FILE='datos_histograma.txt',STATUS='OLD',ACTION='READ')
     READ(1, *) VX
     VX = VX + 1.0
     BIN = VX / DELTA
+    !write(*,*) bin, vx
+    !write(*,*) delta
     FREQ(BIN) = FREQ(BIN) + 1
-    close(1)
 END DO
+CLOSE(1)
+stop
 
-DO I = 1, NO_BINS
-    open(2,file='salida_histograma.dat',status='unknown',action='write')
-    WRITE(2,*) I * DELTA - 1, FREQ(I)
-END DO
-close(2)
+!DO I = 1, NO_BINS
+!    OPEN(2,FILE='SALIDA_HISTOGRAMA.DAT',STATUS='UNKNOWN',ACTION='WRITE')
+!    WRITE(2,*) I * DELTA - 1, FREQ(I)
+!END DO
+!CLOSE(2)
 
 END PROGRAM HISTOGRAMA
