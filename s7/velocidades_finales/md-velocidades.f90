@@ -1,7 +1,7 @@
 MODULE VARIABLES
 IMPLICIT NONE
 INTEGER :: N,NN,NPASOS
-REAL*8 :: RHO,LX,LY,DX,DY,RIJ,UPOT,UKIN,UTOT,ULJ,UCUT,M_X,M_Y,DELTA_T,R_CUT
+REAL*8 :: RHO,LX,LY,DX,DY,RIJ,UPOT,UKIN,ukin_t,UTOT,ULJ,UCUT,M_X,M_Y,DELTA_T,R_CUT,temp
 REAL*8 :: SGM = 1.0, EPS=1.0
 REAL*8, DIMENSION(:), ALLOCATABLE::RX,RY
 REAL*8, DIMENSION(:), ALLOCATABLE::VX,VY
@@ -44,6 +44,7 @@ READ(1,*)N
 READ(1,*)RHO
 READ(1,*)DELTA_T
 READ(1,*)R_CUT
+READ(1,*)TEMP
 READ(1,*)
 CLOSE(1)
 
@@ -74,7 +75,7 @@ DO I =1, N
     CALL RANDOM_NUMBER(RND)
     VY(I) = 2.0 * RND - 1.0
     ! IMPRIME VELOCIDADES INICIALES
-    WRITE (23,*) VX(I),VY(I)
+    CALL SALVA_VEL(0)
     M_X = M_X + VX(I)
     M_Y = M_Y + VY(I)
 END DO
@@ -149,6 +150,7 @@ SUBROUTINE MDLOOP
 USE VARIABLES
 IMPLICIT NONE
 INTEGER :: I, PASO
+REAL*8 :: tins,fac
 OPEN(3,FILE='energias.dat', STATUS='UNKNOWN', ACTION='WRITE') 
 DO PASO = 1, NPASOS
     DO I =1, N
@@ -170,21 +172,52 @@ DO PASO = 1, NPASOS
         UKIN = UKIN + VX(I) ** 2 + VY(I)**2 
     END DO
     IF(MOD(PASO,100)== 0) CALL CELDA
+    IF(MOD(PASO,NPASOS/2) == 0) CALL SALVA_VEL(1)
+    IF(MOD(PASO,NPASOS) == 0) CALL SALVA_VEL(2)
     UKIN = UKIN * 0.50
     UTOT = UPOT + UKIN
-    WRITE(3,'(I7,X,3F12.6)')PASO,UPOT/DBLE(N),UKIN/DBLE(N),UTOT/(DBLE(N))
+    ukin_t = 0.5 * ukin
+    tins = ukin_t / dble(N)
+    fac = sqrt(temp/tins)
+    vx(i) = vx(i) * fac
+    vy(i) = vy(i) * fac
+    WRITE(3,'(I7,X,4F12.6)')PASO,UPOT/DBLE(N),UKIN/DBLE(N),UTOT/(DBLE(N)),tins
 END DO
-    ! IMPRIME LAS VELOCIDADES FINALES
-    OPEN(5,FILE='velocidades_finales.dat',STATUS='UNKNOWN',ACTION='WRITE')
-    DO I =1, N
-        VX(I) = VX(I) + 0.50 * DELTA_T * FX(I)
-        VY(I) = VY(I) + 0.50 * DELTA_T * FY(I)
-        WRITE(5,*) VX(I), VY(I)
-    END DO
-    CLOSE(5)
-
 CLOSE(3)
+!    ukin = 0.5 * ukin
+!    tins = ukin / dble(N)
+!    fac = sqrt(temp/tins)
+!    do i = 1, N
+!    vx(i) = vx(i) * fac
+!    vy(i) = vy(i) * fac
+!    write(*,*) tins
+!    end do
 END SUBROUTINE MDLOOP
+
+SUBROUTINE SALVA_VEL(FLAG)
+USE VARIABLES
+IMPLICIT NONE
+INTEGER :: I, FLAG
+IF(FLAG == 0) THEN
+    OPEN(7,FILE='velocidades_al_inicio.dat',STATUS='UNKNOWN',ACTION='WRITE')
+    DO I = 1, N
+    WRITE(7,*) VX(I), VY(I)
+    END DO
+    CLOSE(7)
+ELSEIF(FLAG == 1) THEN
+    OPEN(8, FILE='velocidades_a_mitad.dat',STATUS='UNKNOWN',ACTION='WRITE')
+    DO I = 1, N
+    WRITE(8,*) VX(I), VY(I)
+    END DO
+    CLOSE(8)
+ELSE
+    OPEN(9,FILE='velocidades_al_final.dat',STATUS='UNKNOWN', ACTION='WRITE')
+    DO I = 1, N
+    WRITE(9,*) VX(I), VY(I)
+    END DO
+    CLOSE(9)
+END IF
+END SUBROUTINE SALVA_VEL
 
 SUBROUTINE LOGFILE
 USE UNIDADES_REDUCIDAS
