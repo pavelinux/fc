@@ -1,13 +1,13 @@
 MODULE VARIABLES
 IMPLICIT NONE
 INTEGER :: N,NN,NPASOS
-REAL*8 :: RHO,LX,LY,DX,DY,RIJ,UPOT,UKIN,ukin_t,UTOT,ULJ,UCUT,M_X,M_Y,DELTA_T,R_CUT,temp
+REAL*8 :: RHO,LX,LY,DX,DY,RIJ,UPOT,UKIN,UTOT,ULJ,UCUT,M_X,M_Y,DELTA_T,R_CUT,TEMP
 REAL*8 :: SGM = 1.0, EPS=1.0
 REAL*8, DIMENSION(:), ALLOCATABLE::RX,RY
 REAL*8, DIMENSION(:), ALLOCATABLE::VX,VY
 REAL*8, DIMENSION(:), ALLOCATABLE::FX,FY
 REAL*8  RND
-REAL*8 :: T_I,T_F
+REAL*8 :: T_I,T_F ! Tiempo de de calculo
 END MODULE VARIABLES
 
 MODULE UNIDADES_REDUCIDAS
@@ -74,8 +74,6 @@ DO I =1, N
     VX(I) = 2.0 * RND - 1.0
     CALL RANDOM_NUMBER(RND)
     VY(I) = 2.0 * RND - 1.0
-    ! IMPRIME VELOCIDADES INICIALES
-    CALL SALVA_VEL(0)
     M_X = M_X + VX(I)
     M_Y = M_Y + VY(I)
 END DO
@@ -150,7 +148,7 @@ SUBROUTINE MDLOOP
 USE VARIABLES
 IMPLICIT NONE
 INTEGER :: I, PASO
-REAL*8 :: tins,fac
+REAL*8 :: UKIN_T, TINS, FAC
 OPEN(3,FILE='energias.dat', STATUS='UNKNOWN', ACTION='WRITE') 
 DO PASO = 1, NPASOS
     DO I =1, N
@@ -171,27 +169,24 @@ DO PASO = 1, NPASOS
         VY(I) = VY(I) + 0.50 * DELTA_T * FY(I)
         UKIN = UKIN + VX(I) ** 2 + VY(I)**2 
     END DO
+
     IF(MOD(PASO,100)== 0) CALL CELDA
+
+    IF(PASO == 1) CALL SALVA_VEL(0)
     IF(MOD(PASO,NPASOS/2) == 0) CALL SALVA_VEL(1)
     IF(MOD(PASO,NPASOS) == 0) CALL SALVA_VEL(2)
-    UKIN = UKIN * 0.50
+    
     UTOT = UPOT + UKIN
-    ukin_t = 0.5 * ukin
-    tins = ukin_t / dble(N)
-    fac = sqrt(temp/tins)
-    vx(i) = vx(i) * fac
-    vy(i) = vy(i) * fac
-    WRITE(3,'(I7,X,4F12.6)')PASO,UPOT/DBLE(N),UKIN/DBLE(N),UTOT/(DBLE(N)),tins
+    UKIN_T = 0.5 * UKIN
+    FAC = SQRT(TEMP/TINS)
+    VX(I) = VX(I) * FAC
+    VY(I) = VY(I) * FAC
+    UKIN_T = VX(I) ** 2 + VY(I)**2
+    TINS = UKIN_T / DBLE(N)
+
+    WRITE(3,'(I7,X,4F12.6)')PASO,UPOT/DBLE(N),UKIN/DBLE(N),UTOT/(DBLE(N)),TINS
 END DO
 CLOSE(3)
-!    ukin = 0.5 * ukin
-!    tins = ukin / dble(N)
-!    fac = sqrt(temp/tins)
-!    do i = 1, N
-!    vx(i) = vx(i) * fac
-!    vy(i) = vy(i) * fac
-!    write(*,*) tins
-!    end do
 END SUBROUTINE MDLOOP
 
 SUBROUTINE SALVA_VEL(FLAG)
