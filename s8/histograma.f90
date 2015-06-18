@@ -1,0 +1,35 @@
+PROGRAM HISTOGRAMA
+IMPLICIT NONE
+REAL*8 :: DELTA,LI,LS,Vx_i
+REAL*8, DIMENSION(1000)::VX
+INTEGER, DIMENSION(:), ALLOCATABLE::FREQ
+INTEGER :: I, BIN, NO_BINS, NAT=1000
+NO_BINS = 100
+ALLOCATE(FREQ(-50,50))
+DO I = 1, NAT
+    OPEN(1,FILE='vx_al_final.dat',STATUS='OLD',ACTION='READ')
+    READ(1, *) VX(i)
+END DO
+CLOSE(1)
+
+LS = MAXVAL(VX)
+LI = MINVAL(VX)
+WRITE(*,*) LS, LI
+DELTA = (LS - LI) / NO_BINS
+write(*,*) delta
+
+DO I = 1, NAT
+    OPEN(1,FILE='vx_al_final.dat',STATUS='OLD',ACTION='READ')
+    VX_i = VX_i + 1.0
+    BIN = VX_i / DELTA
+    FREQ(BIN) = FREQ(BIN) + 1
+end do
+close(1)
+
+DO I = 0, NO_BINS
+    OPEN(2,FILE='salida_histograma_vx_final.dat',STATUS='UNKNOWN',ACTION='WRITE')
+    WRITE(2,*) I * DELTA - 1, FREQ(I)
+END DO
+CLOSE(2)
+
+END PROGRAM HISTOGRAMA

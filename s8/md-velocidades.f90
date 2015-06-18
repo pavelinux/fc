@@ -1,0 +1,243 @@
+MODULE VARIABLES
+IMPLICIT NONE
+INTEGER :: N,NN,NPASOS
+REAL*8 :: RHO,LX,LY,DX,DY,RIJ,UPOT,UKIN,ukin_t,UTOT,ULJ,UCUT,M_X,M_Y,DELTA_T,R_CUT,temp
+REAL*8 :: SGM = 1.0, EPS=1.0
+REAL*8, DIMENSION(:), ALLOCATABLE::RX,RY
+REAL*8, DIMENSION(:), ALLOCATABLE::VX,VY
+REAL*8, DIMENSION(:), ALLOCATABLE::FX,FY
+REAL*8  RND
+REAL*8 :: T_I,T_F
+END MODULE VARIABLES
+
+MODULE UNIDADES_REDUCIDAS
+IMPLICIT NONE
+! parametros lj para el Ar
+REAL*8 :: S_AR = 3.4E-10, EPS_AR=1.65E-21,M_AR=6.69E-26
+REAL*8 :: T_R, L_R, RHO_R, UTOT_R
+! K-Boltzman
+REAL*8 :: kB = 1.3806E-23
+END MODULE UNIDADES_REDUCIDAS
+
+PROGRAM MD_F
+USE VARIABLES
+IMPLICIT NONE
+CALL CPU_TIME(T_I)
+CALL COORDENADAS
+CALL CELDA
+CALL FUERZAS
+CALL MDLOOP
+CALL CPU_TIME(T_F)
+CALL LOGFILE
+END PROGRAM MD_F
+
+SUBROUTINE COORDENADAS
+USE VARIABLES
+IMPLICIT NONE
+INTEGER :: I,J,K,M
+
+OPEN(1,FILE='input.txt',STATUS='OLD',ACTION='READ')
+READ(1,*)
+READ(1,*)
+READ(1,*)NPASOS
+READ(1,*)N
+READ(1,*)RHO
+READ(1,*)DELTA_T
+READ(1,*)R_CUT
+READ(1,*)TEMP
+READ(1,*)
+CLOSE(1)
+
+ALLOCATE(RX(N),RY(N))
+ALLOCATE(VX(N),VY(N))
+ALLOCATE(FX(N),FY(N))
+
+LX = SQRT(DBLE(N/RHO))
+LY = LX
+NN = SQRT(DBLE(N)) + 1 
+DX = LX/DBLE(NN)
+DY = DX
+K=0
+DO I=1,NN 
+     DO J=1,NN
+         IF(K<N) THEN
+             K=K+1
+             RX(K) = DBLE(I) * DX
+             RY(K) = DBLE(J) * DY
+         END IF
+     END DO
+END DO
+M_X = 0.0
+M_Y = 0.0
+DO I =1, N
+    CALL RANDOM_NUMBER(RND)
+    VX(I) = 2.0 * RND - 1.0
+    CALL RANDOM_NUMBER(RND)
+    VY(I) = 2.0 * RND - 1.0
+    ! IMPRIME VELOCIDADES INICIALES
+    !CALL SALVA_VEL(0)
+    M_X = M_X + VX(I)
+    M_Y = M_Y + VY(I)
+END DO
+M_X = M_X / DBLE(N)
+M_Y = M_Y / DBLE(N)
+DO I = 1, N
+    VX(I) = VX(I) - M_X
+    VY(I) = VY(I) - M_Y
+END DO
+END SUBROUTINE COORDENADAS
+
+SUBROUTINE CELDA
+USE VARIABLES
+IMPLICIT NONE
+INTEGER :: I
+OPEN(2,FILE='coordenadas.xyz', STATUS='UNKNOWN', ACTION='WRITE')
+WRITE(2,*) N
+WRITE(2,*)
+DO I=1,N
+    WRITE(2,*)'C ', RX(I), RY(I), 0.0
+END DO
+CLOSE(2)
+END SUBROUTINE CELDA
+
+!vvv SUBRUTINA A REVISAR vvv
+
+SUBROUTINE FUERZAS
+USE VARIABLES
+IMPLICIT NONE
+INTEGER :: I, J
+REAL*8 :: DULJ
+DO I=1, N
+    FX(I) = 0.0
+    FY(I) = 0.0
+END DO
+UPOT = 0.0
+DO I = 1, NN - 1
+ DO J = I + 1, NN 
+     DX = RX(I) - RX(J)
+     DY = RY(I) - RY(J)
+    ! MINIMA IMAGEN
+    IF(DX > 0.5 * LX) THEN
+        DX = DX - LX
+    ELSEIF(DX < - 0.5 * LX) THEN
+        DX = DX + LX
+    ENDIF 
+    IF(DY > 0.5 * LY) THEN
+        DY = DY - LY
+    ELSEIF(DY < - 0.5 * LY) THEN
+        DY = DY + LY
+    ENDIF 
+    !
+     RIJ = SQRT(DX * DX + DY * DY)
+      IF (RIJ<= R_CUT) THEN
+!           ULJ = 4.0 * EPS * ((SGM/RIJ)**6 * ( (SGM/RIJ)**6 - 1.0)) - UCUT
+           ULJ = 4.0 * EPS * ((SGM/RIJ)**6 * ( (SGM/RIJ)**6 - 1.0)) 
+           UPOT = UPOT + ULJ
+           DULJ = 48.0 * EPS * (SGM/RIJ)**6 * ((SGM/RIJ)**6 - 0.5)/(RIJ * RIJ)
+           FX(I) = FX(I) + DULJ * DX
+           FY(I) = FY(I) + DULJ * DY
+           FX(J) = FX(J) - DULJ * DX
+           FY(J) = FY(J) - DULJ * DY
+        END IF
+ END DO 
+END DO
+!WRITE(*,'(2F12.7)') SUM(FX),SUM(FY)
+!WRITE(*,*) SUM(FX),SUM(FY)
+!STOP
+END SUBROUTINE FUERZAS
+!^^^ SUBRUTINA CON ERRORES ^^^ 
+SUBROUTINE MDLOOP
+USE VARIABLES
+IMPLICIT NONE
+INTEGER :: I, PASO
+REAL*8 :: tins,fac
+OPEN(3,FILE='energias.dat', STATUS='UNKNOWN', ACTION='WRITE') 
+DO PASO = 1, NPASOS
+    DO I =1, N
+        VX(I) = VX(I) + 0.50 * DELTA_T * FX(I)
+        VY(I) = VY(I) + 0.50 * DELTA_T * FY(I)
+        RX(I) = RX(I) + DELTA_T *VX(I)
+        RY(I) = RY(I) + DELTA_T *VY(I)
+        ! BOUNDARY CONDITIONS
+        IF(RX(I) < 0.0) RX(I) = RX(I) + LX
+        IF(RY(I) < 0.0) RY(I) = RY(I) + LY
+        IF(RX(I) > 0.0) RX(I) = RX(I) - LX
+        IF(RY(I) > 0.0) RY(I) = RY(I) - LY
+    END DO
+    CALL FUERZAS
+    UKIN=0.0
+    DO I =1, N
+        VX(I) = VX(I) + 0.50 * DELTA_T * FX(I)
+        VY(I) = VY(I) + 0.50 * DELTA_T * FY(I)
+        UKIN = UKIN + VX(I) ** 2 + VY(I)**2 
+    END DO
+    !IF(MOD(PASO,100)== 0) CALL CELDA
+    !IF(MOD(PASO,NPASOS/2) == 0) CALL SALVA_VEL(1)
+    IF(MOD(PASO,NPASOS) == 0) CALL SALVA_VEL(2)
+    UKIN = UKIN * 0.50
+    UTOT = UPOT + UKIN
+    ukin_t = 0.5 * ukin
+    tins = ukin_t / dble(N)
+    fac = sqrt(temp/tins)
+    vx(i) = vx(i) * fac
+    vy(i) = vy(i) * fac
+    WRITE(3,'(I7,X,4F12.6)')PASO,UPOT/DBLE(N),UKIN/DBLE(N),UTOT/(DBLE(N)),tins
+END DO
+CLOSE(3)
+!    ukin = 0.5 * ukin
+!    tins = ukin / dble(N)
+!    fac = sqrt(temp/tins)
+!    do i = 1, N
+!    vx(i) = vx(i) * fac
+!    vy(i) = vy(i) * fac
+!    write(*,*) tins
+!    end do
+END SUBROUTINE MDLOOP
+
+SUBROUTINE SALVA_VEL(FLAG)
+USE VARIABLES
+IMPLICIT NONE
+INTEGER :: I, FLAG
+IF(FLAG == 0) THEN
+    OPEN(7,FILE='velocidades_al_inicio.dat',STATUS='UNKNOWN',ACTION='WRITE')
+    DO I = 1, N
+    WRITE(7,*) VX(I), VY(I)
+    END DO
+    CLOSE(7)
+ELSEIF(FLAG == 1) THEN
+    OPEN(8, FILE='velocidades_a_mitad.dat',STATUS='UNKNOWN',ACTION='WRITE')
+    DO I = 1, N
+    WRITE(8,*) VX(I), VY(I)
+    END DO
+    CLOSE(8)
+ELSE
+    OPEN(9,FILE='velocidades_al_final.dat',STATUS='UNKNOWN', ACTION='WRITE')
+    DO I = 1, N
+    WRITE(9,*) VX(I), VY(I)
+    END DO
+    CLOSE(9)
+END IF
+END SUBROUTINE SALVA_VEL
+
+SUBROUTINE LOGFILE
+USE UNIDADES_REDUCIDAS
+USE VARIABLES
+IMPLICIT NONE
+LX = (N / RHO)**0.5
+T_R = (T_F - T_I) * (S_AR * (M_AR / EPS_AR)**0.5)
+L_R = LX / S_AR
+RHO_R = N * S_AR**3 / LX**3
+!UTOT_R = (UTOT /DBLE(N)) / EPS_AR
+OPEN(4,FILE='md2vv.log',STATUS='UNKNOWN',ACTION='WRITE')
+WRITE(4,'(A,X,1F6.3)') 'UNIDADES REDUCIDAS PARA EL Ar. t* (fs) = ', T_R/1E-12
+!WRITE(4,*)'ENERGIA REDUCIDA: ', UTOT_R
+WRITE(4,'(A,X)') 'ESTOS SON LOS DATOS QUE SE USARON PARA CORRER LA SIMULACION'
+WRITE(4,'(A,X,1F12.6)') 'TIEMPO DE CALCULO: ', T_F - T_I
+WRITE(4,'(A,X)') 'VALORES DE LA SIMULACION:'
+WRITE(4,'(A,X,I7)') 'NUMERO DE PASOS:', NPASOS
+WRITE(4,'(A,X,I7)') 'NUMERO DE PARTICULAS:', N
+WRITE(4,'(A,X,1F12.6)') 'DENSIDAD:', RHO
+WRITE(4,'(A,X,1F12.6)') 'PASO DE INTEGRACION:', DELTA_T
+WRITE(4,'(A,X,1F12.6)') 'RADIO DE CORTE:', R_CUT
+CLOSE(4)
+END SUBROUTINE LOGFILE
