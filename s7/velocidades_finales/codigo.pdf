@@ -1,0 +1,413 @@
+%!PS-Adobe-3.0
+%%Title: md-velocidades.f90
+%%For: pavel
+%%Creator: VIM - Vi IMproved 7.3 (2010 Aug 15)
+%%CreationDate: Mon Jun 15 00:05:44 2015
+%%DocumentData: Clean8Bit
+%%Orientation: Portrait
+%%Pages: (atend)
+%%PageOrder: Ascend
+%%BoundingBox: 61 42 577 752
+%%DocumentMedia: letter 612 792 0 () ()
+%%DocumentNeededResources: font Courier
+%%+ font Courier-Bold
+%%+ font Courier-Oblique
+%%+ font Courier-BoldOblique
+%%DocumentSuppliedResources: procset VIM-Prolog 1.4 1
+%%+ encoding VIM-latin1 1.0 0
+%%Requirements: duplex collate
+%%EndComments
+%%BeginDefaults
+%%PageResources: font Courier
+%%+ font Courier-Bold
+%%+ font Courier-Oblique
+%%+ font Courier-BoldOblique
+%%PageMedia: letter
+%%EndDefaults
+%%BeginProlog
+%%BeginResource: procset VIM-Prolog
+%%BeginDocument: /usr/share/vim/vim73/print/prolog.ps
+%!PS-Adobe-3.0 Resource-ProcSet
+%%Title: VIM-Prolog
+%%Version: 1.4 1
+%%EndComments
+% Editing of this file is NOT RECOMMENDED.  You run a very good risk of causing
+% all PostScript printing from VIM failing if you do.  PostScript is not called
+% a write-only language for nothing!
+/packedarray where not{userdict begin/setpacking/pop load def/currentpacking
+false def end}{pop}ifelse/CP currentpacking def true setpacking
+/bd{bind def}bind def/ld{load def}bd/ed{exch def}bd/d/def ld
+/db{dict begin}bd/cde{currentdict end}bd
+/T true d/F false d
+/SO null d/sv{/SO save d}bd/re{SO restore}bd
+/L2 systemdict/languagelevel 2 copy known{get exec}{pop pop 1}ifelse 2 ge d
+/m/moveto ld/s/show ld /ms{m s}bd /g/setgray ld/r/setrgbcolor ld/sp{showpage}bd
+/gs/gsave ld/gr/grestore ld/cp/currentpoint ld
+/ul{gs UW setlinewidth cp UO add 2 copy newpath m 3 1 roll add exch lineto
+stroke gr}bd
+/bg{gs r cp BO add 4 -2 roll rectfill gr}bd
+/sl{90 rotate 0 exch translate}bd
+L2{
+/sspd{mark exch{setpagedevice}stopped cleartomark}bd
+/nc{1 db/NumCopies ed cde sspd}bd
+/sps{3 db/Orientation ed[3 1 roll]/PageSize ed/ImagingBBox null d cde sspd}bd
+/dt{2 db/Tumble ed/Duplex ed cde sspd}bd
+/c{1 db/Collate ed cde sspd}bd
+}{
+/nc{/#copies ed}bd
+/sps{statusdict/setpage get exec}bd
+/dt{statusdict/settumble 2 copy known{get exec}{pop pop pop}ifelse
+statusdict/setduplexmode 2 copy known{get exec}{pop pop pop}ifelse}bd
+/c{pop}bd
+}ifelse
+/ffs{findfont exch scalefont d}bd/sf{setfont}bd
+/ref{1 db findfont dup maxlength dict/NFD ed{exch dup/FID ne{exch NFD 3 1 roll
+put}{pop pop}ifelse}forall/Encoding findresource dup length 256 eq{NFD/Encoding
+3 -1 roll put}{pop}ifelse NFD dup/FontType get 3 ne{/CharStrings}{/CharProcs}
+ifelse 2 copy known{2 copy get dup maxlength dict copy[/questiondown/space]{2
+copy known{2 copy get 2 index/.notdef 3 -1 roll put pop exit}if pop}forall put
+}{pop pop}ifelse dup NFD/FontName 3 -1 roll put NFD definefont pop end}bd
+CP setpacking
+(\004)cvn{}bd
+% vim:ff=unix:
+%%EOF
+%%EndDocument
+%%EndResource
+%%BeginResource: encoding VIM-latin1
+%%BeginDocument: /usr/share/vim/vim73/print/latin1.ps
+%!PS-Adobe-3.0 Resource-Encoding
+%%Title: VIM-latin1
+%%Version: 1.0 0
+%%EndComments
+/VIM-latin1[
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quotesingle
+/parenleft /parenright /asterisk /plus /comma /minus /period /slash
+/zero /one /two /three /four /five /six /seven
+/eight /nine /colon /semicolon /less /equal /greater /question
+/at /A /B /C /D /E /F /G
+/H /I /J /K /L /M /N /O
+/P /Q /R /S /T /U /V /W
+/X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore
+/grave /a /b /c /d /e /f /g
+/h /i /j /k /l /m /n /o
+/p /q /r /s /t /u /v /w
+/x /y /z /braceleft /bar /braceright /asciitilde /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/space /exclamdown /cent /sterling /currency /yen /brokenbar /section
+/dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron
+/degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /periodcentered
+/cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown
+/Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
+/Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis
+/Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply
+/Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls
+/agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla
+/egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
+/eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide
+/oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis]
+/Encoding defineresource pop
+% vim:ff=unix:
+%%EOF
+%%EndDocument
+%%EndResource
+%%EndProlog
+%%BeginSetup
+612 792 0 sps
+1 nc
+T F dt
+T c
+%%IncludeResource: font Courier
+/_F0 /VIM-latin1 /Courier ref
+/F0 10 /_F0 ffs
+%%IncludeResource: font Courier-Bold
+/_F1 /VIM-latin1 /Courier-Bold ref
+/F1 10 /_F1 ffs
+%%IncludeResource: font Courier-Oblique
+/_F2 /VIM-latin1 /Courier-Oblique ref
+/F2 10 /_F2 ffs
+%%IncludeResource: font Courier-BoldOblique
+/_F3 /VIM-latin1 /Courier-BoldOblique ref
+/F3 10 /_F3 ffs
+/UO -1 d
+/UW 0.5 d
+/BO -2.5 d
+%%EndSetup
+%%Page: 1 1
+%%BeginPageSetup
+sv
+0 g
+F0 sf
+%%EndPageSetup
+F1 sf
+(md-velocidades.f90                                                            Página 1)61.2 744.9 ms
+F0 sf
+(MODULE VARIABLES)61.2 724.9 ms
+(IMPLICIT NONE)61.2 714.9 ms
+(INTEGER :: N,NN,NPASOS)61.2 704.9 ms
+(REAL*8 :: RHO,LX,LY,DX,DY,RIJ,UPOT,UKIN,UTOT,ULJ,UCUT,M_X,M_Y,DELTA_T,R_CUT,TEMP)61.2 694.9 ms
+(REAL*8 :: SGM = 1.0, EPS=1.0)61.2 684.9 ms
+(REAL*8, DIMENSION\(:\), ALLOCATABLE::RX,RY)61.2 674.9 ms
+(REAL*8, DIMENSION\(:\), ALLOCATABLE::VX,VY)61.2 664.9 ms
+(REAL*8, DIMENSION\(:\), ALLOCATABLE::FX,FY)61.2 654.9 ms
+(REAL*8  RND)61.2 644.9 ms
+(REAL*8 :: T_I,T_F ! Tiempo de de calculo)61.2 634.9 ms
+(END MODULE VARIABLES)61.2 624.9 ms
+(MODULE UNIDADES_REDUCIDAS)61.2 604.9 ms
+(IMPLICIT NONE)61.2 594.9 ms
+(! parametros lj para el Ar)61.2 584.9 ms
+(REAL*8 :: S_AR = 3.4E-10, EPS_AR=1.65E-21,M_AR=6.69E-26)61.2 574.9 ms
+(REAL*8 :: T_R, L_R, RHO_R, UTOT_R)61.2 564.9 ms
+(! K-Boltzman)61.2 554.9 ms
+(REAL*8 :: kB = 1.3806E-23)61.2 544.9 ms
+(END MODULE UNIDADES_REDUCIDAS)61.2 534.9 ms
+(PROGRAM MD_F)61.2 514.9 ms
+(USE VARIABLES)61.2 504.9 ms
+(IMPLICIT NONE)61.2 494.9 ms
+(CALL CPU_TIME\(T_I\))61.2 484.9 ms
+(CALL COORDENADAS)61.2 474.9 ms
+(CALL CELDA)61.2 464.9 ms
+(CALL FUERZAS)61.2 454.9 ms
+(CALL MDLOOP)61.2 444.9 ms
+(CALL CPU_TIME\(T_F\))61.2 434.9 ms
+(CALL LOGFILE)61.2 424.9 ms
+(END PROGRAM MD_F)61.2 414.9 ms
+(SUBROUTINE COORDENADAS)61.2 394.9 ms
+(USE VARIABLES)61.2 384.9 ms
+(IMPLICIT NONE)61.2 374.9 ms
+(INTEGER :: I,J,K,M)61.2 364.9 ms
+(OPEN\(1,FILE='input.txt',STATUS='OLD',ACTION='READ'\))61.2 344.9 ms
+(READ\(1,*\))61.2 334.9 ms
+(READ\(1,*\))61.2 324.9 ms
+(READ\(1,*\)NPASOS)61.2 314.9 ms
+(READ\(1,*\)N)61.2 304.9 ms
+(READ\(1,*\)RHO)61.2 294.9 ms
+(READ\(1,*\)DELTA_T)61.2 284.9 ms
+(READ\(1,*\)R_CUT)61.2 274.9 ms
+(READ\(1,*\)TEMP)61.2 264.9 ms
+(READ\(1,*\))61.2 254.9 ms
+(CLOSE\(1\))61.2 244.9 ms
+(ALLOCATE\(RX\(N\),RY\(N\)\))61.2 224.9 ms
+(ALLOCATE\(VX\(N\),VY\(N\)\))61.2 214.9 ms
+(ALLOCATE\(FX\(N\),FY\(N\)\))61.2 204.9 ms
+(LX = SQRT\(DBLE\(N/RHO\)\))61.2 184.9 ms
+(LY = LX)61.2 174.9 ms
+(NN = SQRT\(DBLE\(N\)\) + 1 )61.2 164.9 ms
+(DX = LX/DBLE\(NN\))61.2 154.9 ms
+(DY = DX)61.2 144.9 ms
+(K=0)61.2 134.9 ms
+(DO I=1,NN )61.2 124.9 ms
+(     DO J=1,NN)61.2 114.9 ms
+(         IF\(K<N\) THEN)61.2 104.9 ms
+(             K=K+1)61.2 94.9 ms
+(             RX\(K\) = DBLE\(I\) * DX)61.2 84.9 ms
+(             RY\(K\) = DBLE\(J\) * DY)61.2 74.9 ms
+(         END IF)61.2 64.9 ms
+(     END DO)61.2 54.9 ms
+(END DO)61.2 44.9 ms
+re sp
+%%PageTrailer
+%%Page: 2 2
+%%BeginPageSetup
+sv
+0 g
+F0 sf
+%%EndPageSetup
+F1 sf
+(md-velocidades.f90                                                            Página 2)61.2 744.9 ms
+F0 sf
+(M_X = 0.0)61.2 724.9 ms
+(M_Y = 0.0)61.2 714.9 ms
+(DO I =1, N)61.2 704.9 ms
+(    CALL RANDOM_NUMBER\(RND\))61.2 694.9 ms
+(    VX\(I\) = 2.0 * RND - 1.0)61.2 684.9 ms
+(    CALL RANDOM_NUMBER\(RND\))61.2 674.9 ms
+(    VY\(I\) = 2.0 * RND - 1.0)61.2 664.9 ms
+(    M_X = M_X + VX\(I\))61.2 654.9 ms
+(    M_Y = M_Y + VY\(I\))61.2 644.9 ms
+(END DO)61.2 634.9 ms
+(M_X = M_X / DBLE\(N\))61.2 624.9 ms
+(M_Y = M_Y / DBLE\(N\))61.2 614.9 ms
+(DO I = 1, N)61.2 604.9 ms
+(    VX\(I\) = VX\(I\) - M_X)61.2 594.9 ms
+(    VY\(I\) = VY\(I\) - M_Y)61.2 584.9 ms
+(END DO)61.2 574.9 ms
+(END SUBROUTINE COORDENADAS)61.2 564.9 ms
+(SUBROUTINE CELDA)61.2 544.9 ms
+(USE VARIABLES)61.2 534.9 ms
+(IMPLICIT NONE)61.2 524.9 ms
+(INTEGER :: I)61.2 514.9 ms
+(OPEN\(2,FILE='coordenadas.xyz', STATUS='UNKNOWN', ACTION='WRITE'\))61.2 504.9 ms
+(WRITE\(2,*\) N)61.2 494.9 ms
+(WRITE\(2,*\))61.2 484.9 ms
+(DO I=1,N)61.2 474.9 ms
+(    WRITE\(2,*\)'C ', RX\(I\), RY\(I\), 0.0)61.2 464.9 ms
+(END DO)61.2 454.9 ms
+(CLOSE\(2\))61.2 444.9 ms
+(END SUBROUTINE CELDA)61.2 434.9 ms
+(!vvv SUBRUTINA A REVISAR vvv)61.2 414.9 ms
+(SUBROUTINE FUERZAS)61.2 394.9 ms
+(USE VARIABLES)61.2 384.9 ms
+(IMPLICIT NONE)61.2 374.9 ms
+(INTEGER :: I, J)61.2 364.9 ms
+(REAL*8 :: DULJ)61.2 354.9 ms
+(DO I=1, N)61.2 344.9 ms
+(    FX\(I\) = 0.0)61.2 334.9 ms
+(    FY\(I\) = 0.0)61.2 324.9 ms
+(END DO)61.2 314.9 ms
+(UPOT = 0.0)61.2 304.9 ms
+(DO I = 1, NN - 1)61.2 294.9 ms
+( DO J = I + 1, NN )61.2 284.9 ms
+(     DX = RX\(I\) - RX\(J\))61.2 274.9 ms
+(     DY = RY\(I\) - RY\(J\))61.2 264.9 ms
+(    ! MINIMA IMAGEN)61.2 254.9 ms
+(    IF\(DX > 0.5 * LX\) THEN)61.2 244.9 ms
+(        DX = DX - LX)61.2 234.9 ms
+(    ELSEIF\(DX < - 0.5 * LX\) THEN)61.2 224.9 ms
+(        DX = DX + LX)61.2 214.9 ms
+(    ENDIF )61.2 204.9 ms
+(    IF\(DY > 0.5 * LY\) THEN)61.2 194.9 ms
+(        DY = DY - LY)61.2 184.9 ms
+(    ELSEIF\(DY < - 0.5 * LY\) THEN)61.2 174.9 ms
+(        DY = DY + LY)61.2 164.9 ms
+(    ENDIF )61.2 154.9 ms
+(    !)61.2 144.9 ms
+(     RIJ = SQRT\(DX * DX + DY * DY\))61.2 134.9 ms
+(      IF \(RIJ<= R_CUT\) THEN)61.2 124.9 ms
+(!           ULJ = 4.0 * EPS * \(\(SGM/RIJ\)**6 * \( \(SGM/RIJ\)**6 - 1.0\)\) - UCUT)61.2 114.9 ms
+(           ULJ = 4.0 * EPS * \(\(SGM/RIJ\)**6 * \( \(SGM/RIJ\)**6 - 1.0\)\) )61.2 104.9 ms
+(           UPOT = UPOT + ULJ)61.2 94.9 ms
+(           DULJ = 48.0 * EPS * \(SGM/RIJ\)**6 * \(\(SGM/RIJ\)**6 - 0.5\)/\(RIJ * RIJ\))61.2 84.9 ms
+(           FX\(I\) = FX\(I\) + DULJ * DX)61.2 74.9 ms
+(           FY\(I\) = FY\(I\) + DULJ * DY)61.2 64.9 ms
+(           FX\(J\) = FX\(J\) - DULJ * DX)61.2 54.9 ms
+(           FY\(J\) = FY\(J\) - DULJ * DY)61.2 44.9 ms
+re sp
+%%PageTrailer
+%%Page: 3 3
+%%BeginPageSetup
+sv
+0 g
+F0 sf
+%%EndPageSetup
+F1 sf
+(md-velocidades.f90                                                            Página 3)61.2 744.9 ms
+F0 sf
+(        END IF)61.2 724.9 ms
+( END DO )61.2 714.9 ms
+(END DO)61.2 704.9 ms
+(!WRITE\(*,'\(2F12.7\)'\) SUM\(FX\),SUM\(FY\))61.2 694.9 ms
+(!WRITE\(*,*\) SUM\(FX\),SUM\(FY\))61.2 684.9 ms
+(!STOP)61.2 674.9 ms
+(END SUBROUTINE FUERZAS)61.2 664.9 ms
+(!^^^ SUBRUTINA CON ERRORES ^^^ )61.2 654.9 ms
+(SUBROUTINE MDLOOP)61.2 644.9 ms
+(USE VARIABLES)61.2 634.9 ms
+(IMPLICIT NONE)61.2 624.9 ms
+(INTEGER :: I, PASO)61.2 614.9 ms
+(REAL*8 :: UKIN_T, TINS, FAC)61.2 604.9 ms
+(OPEN\(3,FILE='energias.dat', STATUS='UNKNOWN', ACTION='WRITE'\) )61.2 594.9 ms
+(DO PASO = 1, NPASOS)61.2 584.9 ms
+(    DO I =1, N)61.2 574.9 ms
+(        VX\(I\) = VX\(I\) + 0.50 * DELTA_T * FX\(I\))61.2 564.9 ms
+(        VY\(I\) = VY\(I\) + 0.50 * DELTA_T * FY\(I\))61.2 554.9 ms
+(        RX\(I\) = RX\(I\) + DELTA_T *VX\(I\))61.2 544.9 ms
+(        RY\(I\) = RY\(I\) + DELTA_T *VY\(I\))61.2 534.9 ms
+(        ! BOUNDARY CONDITIONS)61.2 524.9 ms
+(        IF\(RX\(I\) < 0.0\) RX\(I\) = RX\(I\) + LX)61.2 514.9 ms
+(        IF\(RY\(I\) < 0.0\) RY\(I\) = RY\(I\) + LY)61.2 504.9 ms
+(        IF\(RX\(I\) > 0.0\) RX\(I\) = RX\(I\) - LX)61.2 494.9 ms
+(        IF\(RY\(I\) > 0.0\) RY\(I\) = RY\(I\) - LY)61.2 484.9 ms
+(    END DO)61.2 474.9 ms
+(    CALL FUERZAS)61.2 464.9 ms
+(    UKIN=0.0)61.2 454.9 ms
+(    DO I =1, N)61.2 444.9 ms
+(        VX\(I\) = VX\(I\) + 0.50 * DELTA_T * FX\(I\))61.2 434.9 ms
+(        VY\(I\) = VY\(I\) + 0.50 * DELTA_T * FY\(I\))61.2 424.9 ms
+(        UKIN = UKIN + VX\(I\) ** 2 + VY\(I\)**2 )61.2 414.9 ms
+(    END DO)61.2 404.9 ms
+(    IF\(MOD\(PASO,100\)== 0\) CALL CELDA)61.2 384.9 ms
+(    IF\(PASO == 1\) CALL SALVA_VEL\(0\))61.2 364.9 ms
+(    IF\(MOD\(PASO,NPASOS/2\) == 0\) CALL SALVA_VEL\(1\))61.2 354.9 ms
+(    IF\(MOD\(PASO,NPASOS\) == 0\) CALL SALVA_VEL\(2\))61.2 344.9 ms
+(    )61.2 334.9 ms
+(    UTOT = UPOT + UKIN)61.2 324.9 ms
+(    UKIN_T = 0.5 * UKIN)61.2 314.9 ms
+(    FAC = SQRT\(TEMP/TINS\))61.2 304.9 ms
+(    VX\(I\) = VX\(I\) * FAC)61.2 294.9 ms
+(    VY\(I\) = VY\(I\) * FAC)61.2 284.9 ms
+(    UKIN_T = VX\(I\) ** 2 + VY\(I\)**2)61.2 274.9 ms
+(    TINS = UKIN_T / DBLE\(N\))61.2 264.9 ms
+(    WRITE\(3,'\(I7,X,4F12.6\)'\)PASO,UPOT/DBLE\(N\),UKIN/DBLE\(N\),UTOT/\(DBLE\(N\)\),TINS)61.2 244.9 ms
+(END DO)61.2 234.9 ms
+(CLOSE\(3\))61.2 224.9 ms
+(END SUBROUTINE MDLOOP)61.2 214.9 ms
+(SUBROUTINE SALVA_VEL\(FLAG\))61.2 194.9 ms
+(USE VARIABLES)61.2 184.9 ms
+(IMPLICIT NONE)61.2 174.9 ms
+(INTEGER :: I, FLAG)61.2 164.9 ms
+(IF\(FLAG == 0\) THEN)61.2 154.9 ms
+(    OPEN\(7,FILE='velocidades_al_inicio.dat',STATUS='UNKNOWN',ACTION='WRITE'\))61.2 144.9 ms
+(    DO I = 1, N)61.2 134.9 ms
+(    WRITE\(7,*\) VX\(I\), VY\(I\))61.2 124.9 ms
+(    END DO)61.2 114.9 ms
+(    CLOSE\(7\))61.2 104.9 ms
+(ELSEIF\(FLAG == 1\) THEN)61.2 94.9 ms
+(    OPEN\(8, FILE='velocidades_a_mitad.dat',STATUS='UNKNOWN',ACTION='WRITE'\))61.2 84.9 ms
+(    DO I = 1, N)61.2 74.9 ms
+(    WRITE\(8,*\) VX\(I\), VY\(I\))61.2 64.9 ms
+(    END DO)61.2 54.9 ms
+(    CLOSE\(8\))61.2 44.9 ms
+re sp
+%%PageTrailer
+%%Page: 4 4
+%%BeginPageSetup
+sv
+0 g
+F0 sf
+%%EndPageSetup
+F1 sf
+(md-velocidades.f90                                                            Página 4)61.2 744.9 ms
+F0 sf
+(ELSE)61.2 724.9 ms
+(    OPEN\(9,FILE='velocidades_al_final.dat',STATUS='UNKNOWN', ACTION='WRITE'\))61.2 714.9 ms
+(    DO I = 1, N)61.2 704.9 ms
+(    WRITE\(9,*\) VX\(I\), VY\(I\))61.2 694.9 ms
+(    END DO)61.2 684.9 ms
+(    CLOSE\(9\))61.2 674.9 ms
+(END IF)61.2 664.9 ms
+(END SUBROUTINE SALVA_VEL)61.2 654.9 ms
+(SUBROUTINE LOGFILE)61.2 634.9 ms
+(USE UNIDADES_REDUCIDAS)61.2 624.9 ms
+(USE VARIABLES)61.2 614.9 ms
+(IMPLICIT NONE)61.2 604.9 ms
+(LX = \(N / RHO\)**0.5)61.2 594.9 ms
+(T_R = \(T_F - T_I\) * \(S_AR * \(M_AR / EPS_AR\)**0.5\))61.2 584.9 ms
+(L_R = LX / S_AR)61.2 574.9 ms
+(RHO_R = N * S_AR**3 / LX**3)61.2 564.9 ms
+(!UTOT_R = \(UTOT /DBLE\(N\)\) / EPS_AR)61.2 554.9 ms
+(OPEN\(4,FILE='md2vv.log',STATUS='UNKNOWN',ACTION='WRITE'\))61.2 544.9 ms
+(WRITE\(4,'\(A,X,1F6.3\)'\) 'UNIDADES REDUCIDAS PARA EL Ar. t* \(fs\) = ', T_R/1E-12)61.2 534.9 ms
+(!WRITE\(4,*\)'ENERGIA REDUCIDA: ', UTOT_R)61.2 524.9 ms
+(WRITE\(4,'\(A,X\)'\) 'ESTOS SON LOS DATOS QUE SE USARON PARA CORRER LA SIMULACION')61.2 514.9 ms
+(WRITE\(4,'\(A,X,1F12.6\)'\) 'TIEMPO DE CALCULO: ', T_F - T_I)61.2 504.9 ms
+(WRITE\(4,'\(A,X\)'\) 'VALORES DE LA SIMULACION:')61.2 494.9 ms
+(WRITE\(4,'\(A,X,I7\)'\) 'NUMERO DE PASOS:', NPASOS)61.2 484.9 ms
+(WRITE\(4,'\(A,X,I7\)'\) 'NUMERO DE PARTICULAS:', N)61.2 474.9 ms
+(WRITE\(4,'\(A,X,1F12.6\)'\) 'DENSIDAD:', RHO)61.2 464.9 ms
+(WRITE\(4,'\(A,X,1F12.6\)'\) 'PASO DE INTEGRACION:', DELTA_T)61.2 454.9 ms
+(WRITE\(4,'\(A,X,1F12.6\)'\) 'RADIO DE CORTE:', R_CUT)61.2 444.9 ms
+(CLOSE\(4\))61.2 434.9 ms
+(END SUBROUTINE LOGFILE)61.2 424.9 ms
+re sp
+%%PageTrailer
+%%Trailer
+%%Pages: 4
+%%EOF
+
