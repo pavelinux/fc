@@ -148,7 +148,7 @@ IMPLICIT NONE
 INTEGER :: I, PASO
 REAL*8 :: TINS,FAC
 OPEN(3,FILE='energias.dat', STATUS='UNKNOWN', ACTION='WRITE') 
-!call gder(0)
+call gder(0)
 DO PASO = 1, NPASOS
     DO I =1, N
         VX(I) = VX(I) + 0.50 * DELTA_T * FX(I)
