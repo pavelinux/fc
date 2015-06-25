@@ -1,20 +1,24 @@
-program suma_mpi
-implicit none
-include "mpif.h"
+PROGRAM SUMA_MPI
+USE MPI
+IMPLICIT NONE
 
-integer :: n = 100, i, suma
+INTEGER :: N = 100, I, SUMA
 
-integer :: nprocs, master = 0, esclavo, error,inicio, fin
+INTEGER :: NPROCS, MASTER = 0, ESCLAVO, ERROR,INICIO, FIN
 
-call mpi_init(error)
-call mpi_comm_size(mpi_comm_world,nprocs, error)
-call mpi_comm_rank(mpi_comm_world,esclavo, error)
-inicio = (esclavo * n) / nprocs + 1
-fin = (esclavo + 1) * n / nprocs
-write(*,*) inicio, fin
-do i = inicio, fin
-	suma = suma + 1
-end do
-!if(esclavo == master) write(*,*) suma
-call mpi_finalize(error)
-end program suma_mpi
+CALL MPI_INIT(ERROR)
+CALL MPI_COMM_SIZE(MPI_COMM_WORLD, NPROCS, ERROR)
+CALL MPI_COMM_RANK(MPI_COMM_WORLD, ESCLAVO, ERROR)
+
+INICIO = (ESCLAVO * N) / NPROCS + 1
+FIN = (ESCLAVO + 1) * N / NPROCS
+
+WRITE(*,*) ESCLAVO, INICIO, FIN
+
+DO I = INICIO, FIN
+    SUMA = SUMA + 1
+END DO
+
+CALL MPI_FINALIZE(ERROR)
+
+END PROGRAM SUMA_MPI
