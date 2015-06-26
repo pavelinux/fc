@@ -1,0 +1,5 @@
+# Compile
+mpif90 suma_mpi.f90
+# Run
+mpirun.mpich2 -np 2 ./a.out
+
