@@ -91,7 +91,7 @@ SUBROUTINE CELDA
 USE VARIABLES
 IMPLICIT NONE
 INTEGER :: I
-!OPEN(2,FILE='coordenadas.xyz', STATUS='UNKNOWN', ACTION='WRITE')
+OPEN(2,FILE='coordenadas.xyz', STATUS='UNKNOWN', ACTION='WRITE')
 WRITE(2,*) N
 WRITE(2,*)
 DO I=1,N
@@ -253,15 +253,15 @@ do i = 1, N - 1
 end do
 else
 allocate(g(num_bins - 1))
-open(11, file='rdf.dat', status='unknown',action='write')
+open(4, file='rdf.dat', status='unknown',action='write')
 do i = 0, num_bins - 1
     linf = i * delta_bin
     lsup = linf + delta_bin
     da = PI * ((lsup)**2 - (linf)**2)
     g(i) = lx*ly*histo_bin(i) / (N**2*da)
-    write(11,*) i* delta_bin, g(i)
+    write(4,*) i* delta_bin, g(i)
 end do
-close(11)
+close(4)
 end if
 end subroutine gder
 
