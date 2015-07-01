@@ -1,0 +1,9 @@
+!----
+!---- Input ensamble canonico NVE
+10000   NUMERO DE PASOS
+1000    NUMERO DE PARTICULAS
+0.8     DENSIDAD
+0.005   DELTA (PASO DE INTEGRACION) 
+2.5     RADIO DE CORTE
+1.0     T_inst
+!----
