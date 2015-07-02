@@ -1,0 +1,40 @@
+PROGRAM SUMA_MPI
+USE MPI
+IMPLICIT NONE
+
+INTEGER :: N = 100, I, SUMA,sumat
+INTEGER :: STATUS(MPI_COMM_WORLD) 
+INTEGER :: NPROCS, MASTER = 0, ESCLAVO, ERROR, INICIO, FIN, RESULTADO = 0
+
+CALL MPI_INIT(ERROR)
+CALL MPI_COMM_SIZE(MPI_COMM_WORLD, NPROCS, ERROR)
+CALL MPI_COMM_RANK(MPI_COMM_WORLD, ESCLAVO, ERROR)
+
+inicio =  esclavo + 1
+fin = n 
+
+!IF(ESCLAVO == MASTER) THEN
+!  INICIO = ESCLAVO 
+!  FIN = N 
+!  SUMA=0
+DO I = INICIO, FIN
+    SUMA = SUMA + i
+END DO
+!  CALL MPI_SEND(SUMA, 1, MPI_INTEGER, 0, 100, MPI_COMM_WORLD,ERROR)
+!  WRITE(*,*) "MANDA", ESCLAVO, SUMA
+!ELSE IF (ESCLAVO == 1) THEN
+!inicio = esclavo + 1
+!fin = n
+!do i = inicio, fin, nprocs
+!   suma = suma + 1
+!end do
+!  CALL MPI_RECV(RESULTADO, 1, MPI_INTEGER, MASTER, 100, MPI_COMM_WORLD, STATUS, ERROR)
+!  !WRITE(*,*) "RECIVE", ESCLAVO, RESULTADO+SUMA
+!  !WRITE(*,*) RESULTADO+SUMA
+!END IF
+!suma = 0
+call mpi_reduce(suma, sumat,1,mpi_integer, mpi_sum, 0, mpi_comm_world, error)
+if(esclavo == 0) write(*,*) suma
+
+CALL MPI_FINALIZE(ERROR)
+END PROGRAM SUMA_MPI
