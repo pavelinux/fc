@@ -148,7 +148,7 @@ IMPLICIT NONE
 INTEGER :: I, PASO
 REAL*8 :: TINS,FAC
 OPEN(3,FILE='energias.dat', STATUS='UNKNOWN', ACTION='WRITE') 
-call gder(0)
+!call gder(0)
 DO PASO = 1, NPASOS
     DO I =1, N
         VX(I) = VX(I) + 0.50 * DELTA_T * FX(I)
@@ -251,15 +251,14 @@ do i = 1, N - 1
     end if
     end do
 end do
-A = lx * ly
 else
-    allocate(g(num_bins - 1))
+allocate(g(num_bins - 1))
 open(11, file='rdf.dat', status='unknown',action='write')
 do i = 0, num_bins - 1
     linf = i * delta_bin
     lsup = linf + delta_bin
     da = PI * ((lsup)**2 - (linf)**2)
-    g(i) = histo_bin(i) / (N**2 * da/A)
+    g(i) = lx*ly*histo_bin(i) / (N**2*da)
     write(11,*) i* delta_bin, g(i)
 end do
 close(11)
