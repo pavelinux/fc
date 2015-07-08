@@ -34,7 +34,7 @@ END DO
 !END IF
 !suma = 0
 call mpi_reduce(suma, sumat,1,mpi_integer, mpi_sum, 0, mpi_comm_world, error)
-if(esclavo == 0) write(*,*) suma
+if(esclavo == 0) write(*,*) suma, esclavo, inicio, fin
 
 CALL MPI_FINALIZE(ERROR)
 END PROGRAM SUMA_MPI
