@@ -89,7 +89,7 @@ WRITE(2,*)
 DO I=1,N
     WRITE(2,*)'C ', RX(I), RY(I), 0.0
 END DO
-!CLOSE(2)
+CLOSE(2) ! <- Descomentar para generar frames
 END SUBROUTINE CELDA
 
 SUBROUTINE FUERZAS
@@ -106,7 +106,6 @@ END DO
 UCUT = 4.0 * EPS * ((SGM/R_CUT)**12 - (SGM/R_CUT)**6) 
 UPOT = 0.0
 
-!DO I = (esclavo + 1), N-1, NPROCS
 DO I = 1, NN - 1
  DO J = I + 1, N 
      DX = RX(I) - RX(J)
@@ -142,25 +141,25 @@ SUBROUTINE MDLOOP
 USE VARIABLES
 IMPLICIT NONE
 INTEGER :: I, PASO,cont
-integer, dimension(:), allocatable::frec
-real*8, dimension(:), allocatable::g
-integer,dimension(:), allocatable::npartx
-integer,dimension(:), allocatable::nparty
+INTEGER, DIMENSION(:), ALLOCATABLE::FREC
+REAL*8, DIMENSION(:), ALLOCATABLE::G
+INTEGER,DIMENSION(:), ALLOCATABLE::NPARTX
+INTEGER,DIMENSION(:), ALLOCATABLE::NPARTY
 REAL*8 :: TINS,FAC
-integer:: bin,no_bins,j
-integer:: mbinsx, mbinsy, binx, biny
-real*8 :: box_m,pi,da,delta,lsup,linf
+INTEGER:: BIN,NO_BINS,J
+INTEGER:: MBINSX, MBINSY, BINX, BINY
+REAL*8 :: BOX_M,PI,DA,DELTA,LSUP,LINF
 
-pi = acos(-1.0)
-delta = 0.02
-box_m = min(lx * 0.50, ly * 0.50)
-no_bins = int(box_m / delta)
-mbinsx = int(lx / delta)
-mbinsy = int(ly / delta)
-allocate(frec(0:no_bins - 1),g(0:no_bins - 1))
-allocate(npartx(0:mbinsx -1),nparty(0:mbinsy - 1))
-frec = 0
-cont = 0
+PI = ACOS(-1.0)
+DELTA = 0.02
+BOX_M = MIN(LX * 0.50, LY * 0.50)
+NO_BINS = INT(BOX_M / DELTA)
+MBINSX = INT(LX / DELTA)
+MBINSY = INT(LY / DELTA)
+ALLOCATE(FREC(0:NO_BINS - 1),G(0:NO_BINS - 1))
+ALLOCATE(NPARTX(0:MBINSX -1),NPARTY(0:MBINSY - 1))
+FREC = 0
+CONT = 0
 
 OPEN(3,FILE='energias.dat', STATUS='UNKNOWN', ACTION='WRITE') 
 DO PASO = 1, NPASOS
@@ -184,48 +183,49 @@ DO PASO = 1, NPASOS
         VY(I) = VY(I) + 0.50 * DELTA_T * FY(I)
         UKIN = UKIN + VX(I) ** 2 + VY(I)**2 
     END DO
-
-    if(mod(paso, 100) == 0) then
-        do i = 1, N
-            binx=rx(i) / delta
-            biny=ry(i) / delta
-            if(binx < mbinsx) npartx(binx) = npartx(binx) + 1
-            if(biny < mbinsy) nparty(biny) = nparty(biny) + 1
-        end do
-    end if
-
-    IF(MOD(PASO,10) == 0) then
-        cont = cont + 1
-        do i = 1, N -1
-            do j = i + 1, N
-                dx = rx(i)-rx(j)
-                dy = ry(i)-ry(j)
+    ! histograma perfil de rho_x, rho_y
+    IF(MOD(PASO, 100) == 0) THEN
+        DO I = 1, N
+            BINX=RX(I) / DELTA
+            BINY=RY(I) / DELTA
+            IF(BINX < MBINSX) NPARTX(BINX) = NPARTX(BINX) + 1
+            IF(BINY < MBINSY) NPARTY(BINY) = NPARTY(BINY) + 1
+        END DO
+    END IF
+    ! histograma g(r)
+    IF(MOD(PASO,10) == 0) THEN
+        CONT = CONT + 1
+        DO I = 1, N -1
+            DO J = I + 1, N
+                DX = RX(I)-RX(J)
+                DY = RY(I)-RY(J)
                 
-                if(dx> 0.5 * lx)then
-                    dx = dx - lx
-                elseif(dx < -0.50 * lx) then
-                    dx = dx + lx
-                end if
-                if(dy> 0.5 * ly)then
-                    dy = dy - ly
-                elseif(dy < -0.50 * ly) then
-                    dy = dy + ly
-                end if
+                IF(DX> 0.5 * LX)THEN
+                    DX = DX - LX
+                ELSEIF(DX < -0.50 * LX) THEN
+                    DX = DX + LX
+                END IF
+                IF(DY> 0.5 * LY)THEN
+                    DY = DY - LY
+                ELSEIF(DY < -0.50 * LY) THEN
+                    DY = DY + LY
+                END IF
 
-                rij = sqrt(dx * dx + dy * dy)
-                bin = int(rij / delta)
+                RIJ = SQRT(DX * DX + DY * DY)
+                BIN = INT(RIJ / DELTA)
 
-                if(bin < no_bins) then
-                    frec(bin) = frec(bin) + 2
-                end if
-            end do
-        end do
-    end if    
+                IF(BIN < NO_BINS) THEN
+                    FREC(BIN) = FREC(BIN) + 2
+                END IF
+            END DO
+        END DO
+    END IF    
 
-    if(mod(paso,10) == 0) call celda
+    IF(MOD(PASO,10) == 0) CALL CELDA
     UKIN = UKIN * 0.50
     UTOT = UPOT + UKIN
     UKIN_T = 0.5 * UKIN
+    !Termostato
     TINS = UKIN_T / DBLE(N)
     FAC = SQRT(TEMP/TINS)
 
@@ -237,28 +237,29 @@ END DO
     WRITE(3,'(I7,X,4F12.6)')PASO,UPOT/DBLE(N),UKIN/DBLE(N),UTOT/(DBLE(N)),TINS
 END DO
 ! Escribe funcion de distribucion radial
-open(4, file='g_(r).dat', status='unknown',action='write')
-do i = 0, no_bins - 1
-    linf = dble(i) * delta
-    lsup = linf + delta
-    da = PI * ((lsup)**2 - (linf)**2)
-    g(i) = lx*ly*frec(i) / (da * dble(N**2))
-    write(4,*) i* delta, g(i) / dble(cont)
-end do
-! Escribe perfile de densidades
-open(5, file='rho_x.dat',status='unknown',action='write')
-do i=0, mbinsx
-    write(5,*)i*delta,npartx(i) / (delta*ly)
-end do
-!close(5)
-open(6, file='rho_y.dat',status='unknown',action='write')
-do i=0, mbinsy
-    write(6,*)i*delta,nparty(i) / (delta*lx)
-end do
-!close(6)
-! Cierra archivos de perfil de densidades
-close(4)
+OPEN(4, FILE='g_(r).dat', STATUS='UNKNOWN',ACTION='WRITE')
+DO I = 0, NO_BINS - 1
+    LINF = DBLE(I) * DELTA
+    LSUP = LINF + DELTA
+    DA = PI * ((LSUP)**2 - (LINF)**2)
+    G(I) = LX*LY*FREC(I) / (DA * DBLE(N**2))
+    WRITE(4,*) I* DELTA, G(I) / DBLE(CONT)
+END DO
+! ESCRIBE PERFILE DE DENSIDADES
+OPEN(5, FILE='rho_x.dat',STATUS='UNKNOWN',ACTION='WRITE')
+DO I=0, MBINSX
+    WRITE(5,*)I, I*DELTA, NPARTX(I) / (DELTA * LY)
+END DO
+CLOSE(5)
+OPEN(6, FILE='rho_y.dat',STATUS='UNKNOWN',ACTION='WRITE')
+DO I=0, MBINSY
+    WRITE(6,*)I, I * DELTA, NPARTY(I) / (DELTA * LX)
+END DO
+CLOSE(6)
+! CIERRA ARCHIVO DE G(R)
+CLOSE(4)
 CALL SALVA_VEL(2)
+! cierra archivo de energias.dat
 CLOSE(3)
 END SUBROUTINE MDLOOP
 
