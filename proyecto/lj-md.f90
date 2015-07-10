@@ -35,15 +35,14 @@ READ(1,*)RHO
 READ(1,*)DELTA_T
 READ(1,*)R_CUT
 READ(1,*)TEMP
-READ(1,*)
+READ(1,*)LY
 CLOSE(1)
 
 ALLOCATE(RX(N),RY(N))
 ALLOCATE(VX(N),VY(N))
 ALLOCATE(FX(N),FY(N))
 
-LX = SQRT(DBLE(N/RHO))
-LY = LX
+LX = DBLE(N) / (LY * RHO)
 NN = SQRT(DBLE(N)) + 1 
 DX = LX/DBLE(NN)
 DY = LY/DBLE(NN)
@@ -90,7 +89,7 @@ WRITE(2,*)
 DO I=1,N
     WRITE(2,*)'C ', RX(I), RY(I), 0.0
 END DO
-CLOSE(2) ! <- Descomentar para generar frames
+!CLOSE(2) ! <- Descomentar para generar frames
 END SUBROUTINE CELDA
 !==================================
 SUBROUTINE FUERZAS
@@ -250,12 +249,12 @@ END DO
 ! ESCRIBE PERFILE DE DENSIDADES
 OPEN(5, FILE='rho_x.dat',STATUS='UNKNOWN',ACTION='WRITE')
 DO I=0, MBINSX
-    WRITE(5,*) I*DELTA, NPARTX(I) / (DELTA * LY)
+    WRITE(5,*) I*DELTA, NPARTX(I) / (DELTA * LY * CONT)
 END DO
 CLOSE(5)
 OPEN(6, FILE='rho_y.dat',STATUS='UNKNOWN',ACTION='WRITE')
 DO I=0, MBINSY
-    WRITE(6,*) I * DELTA, NPARTY(I) / (DELTA * LX)
+    WRITE(6,*) I * DELTA, NPARTY(I) / (DELTA * LX * CONT) 
 END DO
 CLOSE(6)
 ! CIERRA ARCHIVO DE G(R)
