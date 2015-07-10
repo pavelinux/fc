@@ -1,0 +1,6 @@
+10000           !npasos
+1000            !particulas
+1.0             !densidad
+0.005           !paso de integracion
+2.5             !radio de corte
+1               !temperatura
