@@ -33,13 +33,13 @@ OPEN(1,FILE='run.txt',STATUS='OLD',ACTION='READ')
  READ(1,*)DELTA_T
  READ(1,*)RCUT
  READ(1,*)TEMP
+ READ(1,*)LY
 CLOSE(1)
 
 ALLOCATE(RX(NAT),RY(NAT))     
 ALLOCATE(VX(NAT),VY(NAT))       
 ALLOCATE(FX(NAT),FY(NAT))       
-LX  = SQRT(DBLE(NAT)/RHO)       
-LY  = LX                         
+LX  = DBLE(NAT) / (LY * RHO)
 NN = SQRT(DBLE(NAT))+1           
 DX = LX/DBLE(NN)
 DY = LY/DBLE(NN)
@@ -88,7 +88,7 @@ integer :: i
 OPEN(1,file='posi.xyz', status='unknown',action='write')
 
  write(1,*)nat
- write(1,*)'comentario'
+ write(1,*)'comentario', LX, LY
  do i=1,nat
   write(1,*)'C',rx(i),ry(i),0.0
 end do
@@ -235,15 +235,14 @@ end do
   vx(i)=vx(i)*fac
   vy(i)=vy(i)*fac
  end do
-! write(*,'(i7,4f12.6)')paso,upot/dble(nat),ukin/dble(nat),utot/dble(nat),tins
  write(2,'(i7,4f12.6)')paso,upot/dble(nat),ukin/dble(nat),utot/dble(nat),tins
 !=====================================
 enddo
 DO I=0, MBINSX
-WRITE(50,*) I*DELTA, NPARTX(I) / (DELTA * LY) 
+WRITE(50,*) I*DELTA, NPARTX(I) / (DELTA * LY * CONT) 
 END DO
 DO I=0, MBINSY
-WRITE(60,*) I * DELTA, NPARTY(I) / (DELTA * LX)
+WRITE(60,*) I * DELTA, NPARTY(I) / (DELTA * LX * CONT)
 END DO
 
 open (41,file="rdf.dat",action='write')

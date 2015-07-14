@@ -1,6 +1,7 @@
-10000           !npasos
-500            !particulas
-0.1             !densidad
+100000          !npasos
+500             !particulas
+0.3             !densidad
 0.003           !paso de integracion
 2.5             !radio de corte
-0.5               !temperatura
+0.40            !temperatura
+20.0            !LY
