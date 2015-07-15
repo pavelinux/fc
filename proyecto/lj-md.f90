@@ -88,7 +88,7 @@ WRITE(2,*)
 DO I=1,N
     WRITE(2,*)'C ', RX(I), RY(I), 0.0
 END DO
-!CLOSE(2) ! <- Descomentar para generar frames
+CLOSE(2) ! <- comentar para generar frames
 END SUBROUTINE CELDA
 !==================================
 SUBROUTINE FUERZAS
