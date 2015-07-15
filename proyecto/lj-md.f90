@@ -8,7 +8,6 @@ REAL*8, DIMENSION(:), ALLOCATABLE::RX,RY
 REAL*8, DIMENSION(:), ALLOCATABLE::VX,VY
 REAL*8, DIMENSION(:), ALLOCATABLE::FX,FY
 REAL*8  RND
-REAL*8 :: T_I,T_F
 END MODULE VARIABLES
 !==================================
 PROGRAM MD_DP
@@ -111,23 +110,23 @@ DO I = 1, N - 1
      DX = RX(I) - RX(J)
      DY = RY(I) - RY(J)
     ! MINIMA IMAGEN
-    IF(DX > 0.5 * LX) THEN
+    IF(DX > 0.50 * LX) THEN
         DX = DX - LX
-    ELSEIF(DX < - 0.5 * LX) THEN
+    ELSEIF(DX < - 0.50 * LX) THEN
         DX = DX + LX
     ENDIF 
 
-    IF(DY > 0.5 * LY) THEN
+    IF(DY > 0.50 * LY) THEN
         DY = DY - LY
-    ELSEIF(DY < - 0.5 * LY) THEN
+    ELSEIF(DY < - 0.50 * LY) THEN
         DY = DY + LY
     ENDIF 
 
      RIJ = SQRT(DX * DX + DY * DY)
       IF (RIJ<= R_CUT) THEN
-           ULJ = 4.0 * EPS * ((SGM/RIJ)**6 * ((SGM/RIJ)**6 - 1.0)) - UCUT
+           ULJ = 4.0 * EPS * (SGM/RIJ)**6 * ((SGM/RIJ)**6 - 1.0) - UCUT
            UPOT = UPOT + ULJ
-           DULJ = 48.0 * EPS * (SGM/RIJ)**6 * ((SGM/RIJ)**6 - 0.5)/(RIJ * RIJ)
+           DULJ = 48.0 * EPS * (SGM/RIJ)**6 * ((SGM/RIJ)**6 - 0.50)/(RIJ * RIJ)
            FX(I) = FX(I) + DULJ * DX
            FY(I) = FY(I) + DULJ * DY
            FX(J) = FX(J) - DULJ * DX
@@ -146,7 +145,7 @@ INTEGER,DIMENSION(:), ALLOCATABLE::NPARTX
 INTEGER,DIMENSION(:), ALLOCATABLE::NPARTY
 REAL*8, DIMENSION(:), ALLOCATABLE::G
 REAL*8 :: TINS,FAC
-INTEGER:: BIN,NO_BINS,J
+INTEGER:: BIN,NO_BINS,J,CONT2=0
 INTEGER:: MBINSX, MBINSY, BINX, BINY
 REAL*8 :: BOX_M,PI,DA,DELTA,LSUP,LINF
 
@@ -157,7 +156,7 @@ NO_BINS = INT(BOX_M / DELTA)
 MBINSX = INT(LX / DELTA)
 MBINSY = INT(LY / DELTA)
 ALLOCATE(FREC(0:NO_BINS - 1),G(0:NO_BINS - 1))
-ALLOCATE(NPARTX(0:MBINSX -1),NPARTY(0:MBINSY - 1))
+ALLOCATE(NPARTX(0:MBINSX),NPARTY(0:MBINSY))
 FREC = 0
 CONT = 0
 
@@ -185,11 +184,12 @@ DO PASO = 1, NPASOS
     END DO
     ! histograma perfil de rho_x, rho_y
     IF(MOD(PASO, 100) == 0) THEN
+        CONT2 = CONT2 + 1
         DO I = 1, N
             BINX=RX(I) / DELTA
             BINY=RY(I) / DELTA
-            IF(BINX < MBINSX) NPARTX(BINX) = NPARTX(BINX) + 1
-            IF(BINY < MBINSY) NPARTY(BINY) = NPARTY(BINY) + 1
+            IF(BINX <= MBINSX) NPARTX(BINX) = NPARTX(BINX) + 1
+            IF(BINY <= MBINSY) NPARTY(BINY) = NPARTY(BINY) + 1
         END DO
     END IF
     ! histograma g(r)
@@ -200,12 +200,12 @@ DO PASO = 1, NPASOS
                 DX = RX(I)-RX(J)
                 DY = RY(I)-RY(J)
                 
-                IF(DX> 0.5 * LX)THEN
+                IF(DX > 0.50 * LX)THEN
                     DX = DX - LX
                 ELSEIF(DX < -0.50 * LX) THEN
                     DX = DX + LX
                 END IF
-                IF(DY> 0.5 * LY)THEN
+                IF(DY > 0.5 * LY)THEN
                     DY = DY - LY
                 ELSEIF(DY < -0.50 * LY) THEN
                     DY = DY + LY
@@ -248,12 +248,12 @@ END DO
 ! ESCRIBE PERFILE DE DENSIDADES
 OPEN(5, FILE='rho_x.dat',STATUS='UNKNOWN',ACTION='WRITE')
 DO I=0, MBINSX
-    WRITE(5,*) I*DELTA, NPARTX(I) / (DELTA * LY * CONT)
+    WRITE(5,*) I*DELTA, NPARTX(I) / (DELTA * LY * CONT2)
 END DO
 CLOSE(5)
 OPEN(6, FILE='rho_y.dat',STATUS='UNKNOWN',ACTION='WRITE')
 DO I=0, MBINSY
-    WRITE(6,*) I * DELTA, NPARTY(I) / (DELTA * LX * CONT) 
+    WRITE(6,*) I * DELTA, NPARTY(I) / (DELTA * LX * CONT2) 
 END DO
 CLOSE(6)
 ! CIERRA ARCHIVO DE G(R)
