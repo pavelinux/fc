@@ -25,7 +25,7 @@ USE VARIABLES
 IMPLICIT NONE
 INTEGER :: I,J,K
 
-OPEN(1,FILE='input-p.txt',STATUS='OLD',ACTION='READ')
+OPEN(1,FILE='input.txt',STATUS='OLD',ACTION='READ')
 READ(1,*)
 READ(1,*)
 READ(1,*)NPASOS
@@ -237,7 +237,7 @@ DO PASO = 1, NPASOS
 
     WRITE(3,'(I7,X,4F12.6)')PASO,UPOT/DBLE(N),UKIN/DBLE(N),UTOT/(DBLE(N)),TINS
 END DO
-!================================== DO de la DINAMICA
+!================================== TERMINA DO de la DINAMICA
 ! Escribe funcion de distribucion radial
 OPEN(4, FILE='g_(r).dat', STATUS='UNKNOWN',ACTION='WRITE')
 DO I = 0, NO_BINS - 1
@@ -261,7 +261,7 @@ CLOSE(6)
 ! CIERRA ARCHIVO DE G(R)
 CLOSE(4)
 CALL SALVA_VEL(2)
-! cierra archivo de energias.dat
+! CIERRA ARCHIVO DE ENERGIAS.DAT
 CLOSE(3)
 END SUBROUTINE MDLOOP
 
